@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" maxRequests="256" maxSessions="64"
+		maxTransactions="16" useStatementNamespaces="true" />
+	<sqlMap resource="cn/game/xml/basic/bonusmission/Bonusmission.xml" />
+	<sqlMap resource="cn/game/xml/basic/business/Business.xml" />
+	<sqlMap resource="cn/game/xml/basic/config/Config.xml" />
+	<sqlMap resource="cn/game/xml/basic/dailymission/Dailymission.xml" />
+	<sqlMap resource="cn/game/xml/basic/faction/Faction.xml" />
+	<sqlMap resource="cn/game/xml/basic/item/Item.xml" />
+	<sqlMap resource="cn/game/xml/basic/roulette/Roulette.xml" />
+	<sqlMap resource="cn/game/xml/basic/shop/Shop.xml" />
+	<sqlMap resource="cn/game/xml/basic/mission/Mission.xml" />
+	<sqlMap resource="cn/game/xml/basic/skill/Skill.xml" />
+	<sqlMap resource="cn/game/xml/basic/title/Title.xml" />
+	<sqlMap resource="cn/game/xml/basic/weapon/Weapon.xml" />
+	<sqlMap resource="cn/game/xml/basic/weapon_box/Weapon_box.xml" />
+	<!-- 兑换规则 luoyaoren -->
+	<sqlMap resource="cn/game/xml/basic/exchange/exchangeRules.xml" />
+	<sqlMap resource="cn/game/xml/basic/bathroom/BathRoom.xml" />
+	<sqlMap resource="cn/game/xml/basic/criminal/Criminal.xml" />
+	<sqlMap resource="cn/game/xml/basic/globalchat/GlobalChat.xml" />
+	<sqlMap resource="cn/game/xml/basic/consumerecord/consumerecord.xml" />
+	<sqlMap resource="cn/game/xml/basic/contest/Contest.xml" />
+	<sqlMap resource="cn/game/xml/basic/score/Score.xml" />
+	<sqlMap resource="cn/game/xml/basic/score/Consumerecord.xml" />
+
+	<!-- 公会 -->
+	<sqlMap resource="cn/game/xml/basic/group/BGroupSkill.xml" />
+	<sqlMap resource="cn/game/xml/basic/group/BGroupMission.xml" />
+	<!--藏金阁  -->
+		<sqlMap resource="cn/game/xml/basic/loft/Loft.xml" />
+		<sqlMap resource="cn/game/xml/basic/loft/GoldLoft.xml" />
+		
+	<sqlMap resource="cn/game/xml/pay/PayRecord.xml" />
+	<sqlMap resource="cn/game/xml/pay/YeePayLog.xml" />
+</sqlMapConfig>

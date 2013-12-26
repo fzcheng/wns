@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="DayLogin">
+
+	<typeAlias alias="daylogin" type="cn.game.vo.analyse.DayLoginVO" />
+	<parameterMap class="daylogin" id="pm_daylogin_without_id">
+		<parameter property="date" javaType="String" jdbcType="DATE" />
+		<parameter property="regcount" javaType="int" jdbcType="INT" />
+		<parameter property="logincount" javaType="int" jdbcType="INT" />
+		<parameter property="clogincount" javaType="int" jdbcType="INT" />
+		<parameter property="lcount2" javaType="int" jdbcType="INT" />
+		<parameter property="lcount3" javaType="int" jdbcType="INT" />
+		<parameter property="lcount4" javaType="int" jdbcType="INT" />
+		<parameter property="lcount5" javaType="int" jdbcType="INT" />
+		<parameter property="lcount6" javaType="int" jdbcType="INT" />
+		<parameter property="lcount7" javaType="int" jdbcType="INT" />
+		<parameter property="effectcount" javaType="int" jdbcType="INT" />
+	</parameterMap>
+
+	<sql id="byCondition">
+		<![CDATA[
+		   id = #id:INT#
+	    ]]>
+	</sql>
+
+	<select id="getById" parameterClass="int" resultClass="daylogin">
+		<![CDATA[
+			select * from analyseday where id=#id:INT#
+		]]>
+	</select>
+
+	<select id="getByDate" parameterClass="string" resultClass="daylogin">
+		<![CDATA[
+			select * from analyseday where date = #date:DATE# limit 1
+		]]>
+	</select>
+
+	<update id="update" parameterClass="daylogin">
+		<![CDATA[
+			UPDATE analyseday
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="regcount" prepend=",">
+				<![CDATA[
+					regcount = #regcount:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="logincount" prepend=",">
+				<![CDATA[
+					logincount = #logincount:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="clogincount" prepend=",">
+				<![CDATA[
+					clogincount = #clogincount:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="lcount2" prepend=",">
+				<![CDATA[
+					lcount2 = #lcount2:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="lcount3" prepend=",">
+				<![CDATA[
+					lcount3 = #lcount3:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="lcount4" prepend=",">
+				<![CDATA[
+					lcount4 = #lcount4:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="lcount5" prepend=",">
+				<![CDATA[
+					lcount5 = #lcount5:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="lcount6" prepend=",">
+				<![CDATA[
+					lcount6 = #lcount6:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="lcount7" prepend=",">
+				<![CDATA[
+					lcount7 = #lcount7:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="effectcount" prepend=",">
+				<![CDATA[
+					effectcount = #effectcount:INT#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			id = #id:INT#
+		</dynamic>
+	</update>
+
+	<insert id="save" parameterMap="pm_daylogin_without_id">
+		<![CDATA[
+			INSERT INTO analyseday (date, regcount, logincount, clogincount, lcount2, lcount3, lcount4, lcount5, lcount6, lcount7, effectcount) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+</sqlMap>

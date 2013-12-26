@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="TsCode">
+
+	<typeAlias alias="tscode" type="cn.game.vo.ts.TsCode" />
+	<parameterMap class="tscode" id="pm_tscode_without_id">
+		<parameter property="code" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="flag" javaType="int" jdbcType="INT" />
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_tscode_without_id">
+		<![CDATA[
+			INSERT INTO ts_code (code,flag) 
+			VALUES (?,?)
+		]]>
+	</insert>
+
+	<update id="update" parameterClass="tscode">
+		<![CDATA[
+			UPDATE ts_code
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="flag" prepend=",">
+				<![CDATA[
+					flag = #flag:INT#
+				]]>
+			</isNotNull>
+			
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<isNotNull property="id" prepend="">
+				<![CDATA[
+					id = #id:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+	</update>
+	
+	<select id="getById" parameterClass="int" resultClass="tscode">
+		select * from  ts_code where id = #id:INT#
+	</select>
+	
+	<select id="getByCode" parameterClass="String" resultClass="tscode">
+		select * from  ts_code where code = #code:VARCHAR#
+	</select>
+</sqlMap>

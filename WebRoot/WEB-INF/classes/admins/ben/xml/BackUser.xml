@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BackUser">
+
+	<typeAlias alias="backuser" type="admins.ben.BackUserVO" />
+	<parameterMap class="backuser" id="pm_backuser_without_id">
+		<parameter property="userName" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="userPwd" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="userState" javaType="int" jdbcType="INT" />
+		<parameter property="roleId" javaType="int" jdbcType="INT" />
+		<parameter property="roleName" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="gameId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="channelId" javaType="int" jdbcType="INT"/>
+		<parameter property="loginCount" javaType="int" jdbcType="INT" />
+		<parameter property="lastLoginTime" javaType="string" jdbcType="DATETIME" />
+		<parameter property="createTime" javaType="string" jdbcType="DATETIME" />
+	</parameterMap>
+	
+	<select id="getAdminLogin" parameterClass="backuser" resultClass="backuser">
+	<![CDATA[
+		SELECT * FROM back_user WHERE  userName=#userName:VARCHAR# and userPwd=#userPwd:VARCHAR#
+	]]>
+	</select>
+	
+	<sql id="byBackUserIDCondition">
+		<![CDATA[
+		   userId = #userId:INT#
+	    ]]>
+	</sql>
+	
+	<insert id="save" parameterMap="pm_backuser_without_id">
+		<![CDATA[
+			INSERT INTO back_user (userName,userPwd,userState,roleId,roleName,gameId,channelId,loginCount,lastLoginTime,createTime) VALUES(?,?,?,?,?,?,?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+	
+	<delete id="delete" parameterClass="int" >
+		<![CDATA[
+			delete from back_user 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byBackUserIDCondition" />
+		</dynamic>
+	</delete>
+
+	<update id="update" parameterClass="backuser">
+		<![CDATA[
+			UPDATE back_user 
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="userName" prepend=",">
+				<![CDATA[
+					userName = #userName:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="userPwd" prepend=",">
+				<![CDATA[
+					userPwd = #userPwd:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="userState" prepend=",">
+				<![CDATA[
+					userState = #userState:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="roleId" prepend=",">
+				<![CDATA[
+					roleId = #roleId:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="roleName" prepend=",">
+				<![CDATA[
+					roleName = #roleName:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="gameId" prepend=",">
+				<![CDATA[
+					gameId = #gameId:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="channelId" prepend=",">
+				<![CDATA[
+					channelId = #channelId:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="loginCount" prepend=",">
+				<![CDATA[
+					loginCount = #loginCount:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="lastLoginTime" prepend=",">
+				<![CDATA[
+					lastLoginTime = #lastLoginTime:DATETIME#
+				]]>
+			</isNotNull>
+			<isNotNull property="createTime" prepend=",">
+				<![CDATA[
+					createTime = #createTime:DATETIME#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byBackUserIDCondition" />
+		</dynamic>
+	</update>
+	
+	<select id="findBackUserList" resultClass="backuser">
+		<![CDATA[
+			SELECT * FROM back_user 
+		]]>
+	</select>
+	
+	<select id="getBackUserById" parameterClass="int" resultClass="backuser">
+		<![CDATA[
+			SELECT * FROM back_user
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byBackUserIDCondition" />
+		</dynamic>
+	</select>
+	
+	<select id="checkUserName" parameterClass="string" resultClass="backuser">
+		<![CDATA[
+			SELECT * FROM back_user WHERE  userName=#userName:VARCHAR#
+		]]>
+	</select>
+	
+	<update id="updateBackUserByRoleId" parameterClass="backuser">
+			<![CDATA[
+				UPDATE back_user SET roleName = #roleName:VARCHAR#  WHERE  roleId = #roleId:INT#
+			]]>
+	</update>
+	
+	<select id="findBackUserByRoleId" parameterClass="int" resultClass="backuser">
+		<![CDATA[
+			SELECT * FROM back_user WHERE  roleId = #roleId:INT#
+		]]>
+	</select>
+</sqlMap>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BackRoleGame">
+
+	<typeAlias alias="backrolegame" type="admins.ben.BackRoleGameVO" />
+	<parameterMap class="backrolegame" id="pm_backrolegame_without_id">
+		<parameter property="roleId" javaType="int" jdbcType="INT" />
+		<parameter property="gameId" javaType="String" jdbcType="VARCHAR" />
+		<parameter property="channelId" javaType="int" jdbcType="INT" />
+		<parameter property="state" javaType="int" jdbcType="INT" />
+		<parameter property="createTime" javaType="string" jdbcType="DATETIME" />
+	</parameterMap>
+	
+	<typeAlias alias="backrolegamedetail" type="admins.ben.BackRoleGameDetailVO" />
+	
+	<sql id="byBackRoleGameIDCondition">
+		<![CDATA[
+		   id = #id:INT#
+	    ]]>
+	</sql>
+	
+	<insert id="save" parameterMap="pm_backrolegame_without_id">
+		<![CDATA[
+			INSERT INTO back_role_game (roleId,gameId,channelId,state,createTime) VALUES(?,?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+	
+	<delete id="delete" parameterClass="int" >
+		<![CDATA[
+			delete from back_role_game 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byBackRoleGameIDCondition" />
+		</dynamic>
+	</delete>
+
+	<update id="update" parameterClass="backrolegame">
+		<![CDATA[
+			UPDATE back_role_game 
+		]]>
+		<dynamic prepend="SET">
+		 
+			<isNotNull property="state" prepend=",">
+				<![CDATA[
+					state = #state:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="createTime" prepend=",">
+				<![CDATA[
+					createTime = #createTime:DATETIME#
+				]]>
+			</isNotNull>
+		</dynamic>
+		
+		<dynamic prepend="WHERE">
+		 
+			 roleId = #roleId# and gameId = #gameId#  and channelId = #channelId# 
+		</dynamic>
+	</update>
+	
+	<select id="findBackRoleGameList" resultClass="backrolegame">
+		<![CDATA[
+			SELECT * FROM back_role_game where state = 0;
+		]]>
+	</select>
+	
+	<select id="findBackRoleGameByRoleId" parameterClass="int"  resultClass="backrolegame">
+		<![CDATA[
+			SELECT * FROM back_role_game WHERE  roleId=#roleId:INT# and state = 0
+		]]>
+	</select>
+	
+	<select id="findBackRoleGameByRoleIdorState" parameterClass="int"  resultClass="backrolegame">
+		<![CDATA[
+			SELECT * FROM back_role_game WHERE  roleId=#roleId:INT# and state = 0 or state = 1
+		]]>
+	</select>
+	
+	<select id="findBackRoleGameByRoleIdGameIdorState" parameterClass="java.util.Map"   resultClass="backrolegame">
+		<![CDATA[
+			SELECT * FROM back_role_game WHERE  roleId=#roleId#  and gameId=#gameId# and state = 0 or state = 1
+		]]>
+	</select>
+	
+	<select id="getBackRoleGameById" parameterClass="int" resultClass="backrolegame">
+		<![CDATA[
+			SELECT * FROM back_role_game 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byBackRoleGameIDCondition" />
+		</dynamic>
+	</select>
+	
+	<select id="findBackRoleGameByGameId" parameterClass="int" resultClass="backrolegame">
+		<![CDATA[
+			SELECT * FROM back_role_game WHERE  gameId=#gameId:VARCHAR# 
+		]]>
+	</select>
+	<delete id="deleteRoleGameByRoleIdAndGameId" parameterClass="backrolegame" >
+		<![CDATA[
+			delete from back_role_game WHERE gameId=#gameId:VARCHAR# AND roleId=#roleId:INT#
+		]]>
+	</delete>
+	
+	<select id="getBackRoleGameByRoleIdAndGameId" parameterClass="backrolegame" resultClass="backrolegame">
+		<![CDATA[
+			SELECT * FROM back_role_game WHERE  gameId=#gameId:VARCHAR# AND roleId=#roleId:INT#
+		]]>
+	</select>
+	
+	<select id="getRoleFuncList" resultClass="backrolegame">
+		<![CDATA[
+			SELECT * FROM back_role_game WHERE state = 1;
+		]]>
+	</select>
+	
+	<select id="getBackRoleGameDetailListByRoleId" parameterClass="int" resultClass="backrolegamedetail">
+		<![CDATA[
+			select a.id,a.roleId,a.gameId,a.channelId,a.state,a.createTime,b.gameName,c.channelName from back_role_game as a, game as b, gamechannel as c where a.gameId = b.gameId and a.gameId = c.gameId and a.channelId = c.channelId and a.roleId=#INT#
+		]]>
+	</select>
+</sqlMap>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PayCode">
+
+	<typeAlias alias="paycode" type="cn.game.pay.mmarket.PayCodeVO" />
+	
+
+	<select id="getById" parameterClass="string" resultClass="paycode">
+		<![CDATA[
+	 		SELECT * FROM mm_paycode WHERE paycode=#paycode:VARCHAR# 
+	 	]]>
+	</select>
+	
+	<select id="loadList" resultClass="paycode">
+		<![CDATA[
+	 		SELECT * FROM mm_paycode  
+	 	]]>
+	</select>
+
+</sqlMap>

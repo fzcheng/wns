@@ -1,0 +1,35 @@
+.VerticalMenu ul.Level_1 {
+	border-style: solid solid solid solid;
+	border-color: #339999;
+	border-size: 1px;
+	border-width: 1px;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.VerticalMenu ul.menuItemList {
+	margin:2px;
+	padding-left:5px;
+	line-height:22px;
+	display:none;
+}
+
+.VerticalMenu ul.menuItemList li a {background:url('../image/admin/a2.gif') no-repeat left center;padding-left:12px;}
+.VerticalMenu ul.menuItemList li a.current {color:#A00;font-weight:bold;}
+.VerticalMenu ul.blocked {display:block;}
+	
+.VerticalMenu li a.menuItem{
+	font-weight:bold;
+	font-size:10pt;
+	display: block;
+  	height: 24px;
+	padding: 4px 0 4px 10px;
+	line-height: 24px;
+	text-decoration: none;
+}	
+.VerticalMenu li a.menuItem:link, .VerticalMenu li a.menuItem:visited {
+	color: #99CC33;
+}
+
+	

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PayRecord">
+
+	<typeAlias alias="payrecord" type="cn.game.vo.record.PayrecordVO" />
+	<parameterMap class="payrecord" id="pm_payrecord_without_id">
+		<parameter property="userId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="gameId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="orderId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="channelName" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="rmb" javaType="float" jdbcType="FLOAT" />
+		<parameter property="gameMoney" javaType="int" jdbcType="INT" />
+		<parameter property="status" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="jsonData" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="createTime" javaType="string" jdbcType="DATETIME" />
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_payrecord_without_id">
+		<![CDATA[
+			INSERT INTO $tableName$ (userId,gameId,orderId,channelName,rmb,gameMoney,status,jsonData,createTime) 
+			VALUES (?,?,?,?,?,?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<select id="getById" parameterClass="payrecord" resultClass="payrecord">
+		select *,"$tableName$" as tableName from  $tableName$ where id = #id:INT#
+	</select>
+	
+	<select id="getByOrderId" parameterClass="payrecord" resultClass="payrecord">
+		select *,"$tableName$" as tableName from  $tableName$ where orderId = #orderId:VARCHAR#
+	</select>
+	
+	<select id="getCountByUserId" parameterClass="payrecord" resultClass="int">
+		select count(*) from  $tableName$ where userId = #userId:VARCHAR# and status="S"
+	</select>
+</sqlMap>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Gamepay_date">
+	<typeAlias alias="gamepay_day" type="admins.ben.Gamepay_DateVO" />
+ 	<resultMap class="admins.ben.Gamepay_DateVO" id="gamepay_day">
+	 	<result property="channelId" column="channelId"  />
+	 	<result property="sectionId" column="sectionId" />
+	 	<result property="moneyType" column="moneyType" />
+	    <result property="payCount" column="payCount"  nullValue="0" />
+	    <result property="rechargeCount" column="rechargeCount" />
+	    <result property="countDate" column="countDate"  nullValue="0"/>
+ 	</resultMap>
+	<parameterMap class="gamepay_day" id="pm_gamepay_day_without_id">
+		<parameter property="channelId" javaType="string" jdbcType="VARCHAR"/>
+		<parameter property="sectionId" javaType="int" jdbcType="INT" />
+		<parameter property="moneyType" javaType="int" jdbcType="INT" />
+		<parameter property="payCount" javaType="int" jdbcType="INT" />
+		<parameter property="rechargeCount" javaType="int" jdbcType="INT" />
+		<parameter property="countDate" javaType="string" jdbcType="DATETIME"/>
+	</parameterMap>
+	
+ 	<!-- 自动统计当天的 -->
+ 	<select id="loadGamepayrecordByDayList"  resultMap="gamepay_day">
+		<![CDATA[
+		select channelId ,sectionId, moneyType,count(id) payCount,sum(money)  
+		rechargeCount  ,date_format(rechargeTime,'%Y-%m-%d')  countDate  
+		from gamepayrecord where to_days(rechargeTime) = to_days(now()) group by channelId
+		]]>
+		 
+	</select>
+	
+	<insert id="saveDay" parameterMap="pm_gamepay_day_without_id">
+		<![CDATA[
+			INSERT INTO gamepay_day (
+			channelId, 
+			sectionId, 
+			moneyType, 
+			payCount, 
+			rechargeCount, 
+			countDate
+		 ) VALUES (?,?,?,?,?,?)
+		]]>
+		
+	</insert>
+	
+		<insert id="saveWeek" parameterMap="pm_gamepay_day_without_id">
+		<![CDATA[
+			INSERT INTO gamepay_week (
+			channelId, 
+			sectionId, 
+			moneyType, 
+			payCount, 
+			rechargeCount, 
+			countDate
+		 ) VALUES (?,?,?,?,?,?)
+		]]>
+		
+	</insert>
+	
+	<insert id="saveMonth" parameterMap="pm_gamepay_day_without_id">
+		<![CDATA[
+			INSERT INTO gamepay_month (
+			channelId, 
+			sectionId, 
+			moneyType, 
+			payCount, 
+			rechargeCount, 
+			countDate
+		 ) VALUES (?,?,?,?,?,?)
+		]]>
+		
+	</insert>
+	
+	
+	<!-- 检测是否做过昨日运营统计 -->
+	<select id="CheckGamepayDayList" parameterClass="java.util.Map"  resultMap="gamepay_day">
+		<![CDATA[
+			SELECT channelId,sectionId,moneyType,payCount,rechargeCount,countDate FROM gamepay_day  where WEEK(countDate,1) =WEEK(now(),1) -1
+		]]>
+	</select>
+	
+		<!-- 检测是否做过上周运营统计 -->
+	<select id="CheckGamepayWeekList"    resultMap="gamepay_day">
+		<![CDATA[
+			SELECT channelId,sectionId,moneyType,payCount,rechargeCount,countDate FROM gamepay_day  where WEEK(countDate,1) =WEEK(now(),1) -1
+		]]>
+	</select>
+	
+			<!-- 检测是否做过上月运营统计 -->
+	<select id="CheckGamepayMonthList" parameterClass="java.util.Map"  resultMap="gamepay_day">
+		<![CDATA[
+			SELECT channelId,sectionId,moneyType,payCount,rechargeCount,countDate FROM gamepay_day  where WEEK(countDate,1) =WEEK(now(),1) -1
+		]]>
+	</select>
+	
+	<!-- 查询当日运营统计 -->
+		<select id="loadGamepayDayList" parameterClass="java.util.Map"  resultMap="gamepay_day">
+		<![CDATA[
+			SELECT channelId,sectionId,moneyType,payCount,rechargeCount,countDate FROM gamepay_day where 1=1
+		]]>
+		 
+	 
+		 <isNotEqual compareValue="-1" property="channelId" prepend="AND">
+			<![CDATA[channelId = #channelId#]]>
+		</isNotEqual>
+		
+		<isNotEqual compareValue="-1" property="sectionId" prepend="AND">
+			<![CDATA[sectionId = #sectionId#]]>
+		</isNotEqual>
+		<isNotNull property="beginTime" prepend="AND">
+				<![CDATA[countDate >= #beginTime#]]>
+		</isNotNull>
+		<isNotNull property="endTime" prepend="AND">
+				<![CDATA[countDate <= #endTime#]]>
+		</isNotNull>
+		order by channelId asc
+		 <!--    group by  channelId-->
+		 <isNotNull property="start">
+		  LIMIT #start#,#pageSize#
+		</isNotNull>
+		 
+	</select>
+	
+	
+	<!-- 查询周运营统计 -->
+	
+		<select id="loadGamepayWeekList" parameterClass="java.util.Map"  resultMap="gamepay_day">
+		<![CDATA[
+			SELECT channelId,sectionId,moneyType,payCount,rechargeCount,countDate FROM gamepay_week  where 1=1
+		]]>
+	 	<isNotEqual compareValue="-1" property="channelId" prepend="AND">
+			<![CDATA[channelId = #channelId#]]>
+		</isNotEqual>
+		<isNotEqual compareValue="-1" property="sectionId" prepend="AND">
+			<![CDATA[sectionId = #sectionId#]]>
+		</isNotEqual>
+		<isNotNull property="beginTime" prepend="AND">
+				<![CDATA[countDate >= #beginTime#]]>
+		</isNotNull>
+		<isNotNull property="endTime" prepend="AND">
+				<![CDATA[countDate <= #endTime#]]>
+		</isNotNull>
+		<!--    group by  channelId--> 
+		order by channelId asc
+		 <isNotNull property="start">
+		  LIMIT #start#,#pageSize#
+		</isNotNull>
+		 
+	</select>
+	<!-- 查询月运营统计 -->
+	
+		<select id="loadGamepayMonthList" parameterClass="java.util.Map"  resultMap="gamepay_day">
+		<![CDATA[
+			SELECT channelId,sectionId,moneyType,payCount,rechargeCount,countDate FROM gamepay_month  where 1=1
+		]]>
+		 
+		 <isNotEqual compareValue="-1" property="channelId" prepend="AND">
+			<![CDATA[channelId = #channelId#]]>
+		</isNotEqual>
+		<isNotEqual compareValue="-1" property="sectionId" prepend="AND">
+			<![CDATA[sectionId = #sectionId#]]>
+		</isNotEqual>
+		<isNotNull property="beginTime" prepend="AND">
+				<![CDATA[countDate >= #beginTime#]]>
+		</isNotNull>
+		<isNotNull property="endTime" prepend="AND">
+				<![CDATA[countDate <= #endTime#]]>
+		</isNotNull>
+		order by channelId asc
+		<!--    group by  channelId-->
+		 <isNotNull property="start">
+		  LIMIT #start#,#pageSize#
+		</isNotNull>
+		 
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BackPower">
+
+	<typeAlias alias="backpower" type="admins.ben.BackPowerVO" />
+	<parameterMap class="backpower" id="pm_backpower_without_id">
+		<parameter property="powerName" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="linkUrl" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="parentId" javaType="int" jdbcType="INT" />
+		<parameter property="powerSn" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="powerDsc" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="type" javaType="int" jdbcType="INT" />
+		<parameter property="createTime" javaType="string" jdbcType="DATETIME" />
+	</parameterMap>
+	
+	<sql id="byBackPowerIDCondition">
+		<![CDATA[
+		   powerId = #powerId:INT#
+	    ]]>
+	</sql>
+	<select id="getBackPowerById" parameterClass="int" resultClass="backpower">
+		<![CDATA[
+			SELECT * FROM back_power
+		]]>
+		<dynamic prepend="WHERE">
+				<include refid="byBackPowerIDCondition" />
+		</dynamic>
+	</select>
+	
+	<insert id="save" parameterMap="pm_backpower_without_id">
+		<![CDATA[
+			INSERT INTO back_power (powerName,linkUrl,parentId,powerSn,powerDsc,type,createTime) VALUES(?,?,?,?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+	
+	<delete id="delete" parameterClass="int" >
+		<![CDATA[
+			delete from back_power 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byBackPowerIDCondition" />
+		</dynamic>
+	</delete>
+	
+	<update id="update" parameterClass="backpower">
+		<![CDATA[
+			UPDATE back_power 
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="powerName" prepend=",">
+				<![CDATA[
+					powerName = #powerName:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="linkUrl" prepend=",">
+				<![CDATA[
+					linkUrl = #linkUrl:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="parentId" prepend=",">
+				<![CDATA[
+					parentId = #parentId:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="powerDsc" prepend=",">
+				<![CDATA[
+					powerDsc = #powerDsc:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="powerSn" prepend=",">
+				<![CDATA[
+					powerSn = #powerSn:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="createTime" prepend=",">
+				<![CDATA[
+					createTime = #createTime:DATETIME#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byBackPowerIDCondition" />
+		</dynamic>
+	</update>
+	
+	<select id="findBackPowerList" resultClass="backpower">
+		<![CDATA[
+			SELECT * FROM back_power where type = 0;
+		]]>
+	</select>
+	<select id="findBackPowerListByRoleId" parameterClass="int"  resultClass="backpower" >
+		<![CDATA[
+			SELECT * FROM back_power WHERE powerId IN(SELECT powerid FROM back_role_power WHERE roleId = #roleId:INT# and state = 0)
+		]]>
+	</select>
+	<select id="findBackPowerListByParentId" parameterClass="int"  resultClass="backpower" >
+		<![CDATA[
+			SELECT * FROM back_power WHERE parentId = #parentId:INT# and type = 0
+		]]>
+	</select>
+	
+	<select id="getCountByParentId" parameterClass="int" resultClass="int">
+		<![CDATA[
+			SELECT count(*) FROM back_power WHERE parentId = #parentId:INT# and type = 0
+		]]>
+	</select>
+
+	<select id="findBackPowerByPage" parameterClass="backpower" resultClass="backpower">
+		<![CDATA[
+			SELECT * FROM back_power WHERE parentId = #parentId:INT# and type=0 LIMIT #powerId:INT#,10
+		]]>
+	</select>
+	<select id="findBackPowerByPowerId" parameterClass="java.util.List"  resultClass="backpower" >
+		<![CDATA[
+			SELECT * FROM back_power WHERE type = 0 and powerId IN
+		]]>
+		 <isNotNull property="powerIdList">  
+		     <iterate property="powerIdList" conjunction="," open="(" close=")" >
+		         #powerIdList[]# 
+		     </iterate>
+   		</isNotNull>
+	</select>
+
+	<select id="getBackPowerByPowerSn" parameterClass="String"  resultClass="backpower" >
+		<![CDATA[
+			SELECT * FROM back_power WHERE powerSn = #powerSn:INT# and type = 0
+		]]>
+	</select>
+	
+	<select id="getFucListByParentId" parameterClass="java.util.Map" resultClass="admins.ben.OptionBean" >
+		<![CDATA[
+			SELECT 
+				powerId value,
+				powerName text 
+			FROM 
+				back_power 
+			WHERE 
+				type = #type# AND 
+		]]>
+		<isEqual property="type" compareValue="1">parentId = #parentId#</isEqual>
+		<isEqual property="type" compareValue="0">(parentId = #parentId# or powerId = #parentId#)</isEqual>
+	</select>
+	
+	<select id="getFucList" resultClass="backpower" >
+		<![CDATA[SELECT * FROM back_power WHERE type = 1]]>
+	</select>
+</sqlMap>

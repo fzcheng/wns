@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	
+	<bean name="/record" class="cn.game.action.RecordAction">
+		<property name="recordservice" ref="recordservice" />
+	</bean>
+	
+	<bean name="/data" class="cn.game.action.DataAction">
+		<!-- <property name="dataservice" ref="dataservice" /> -->
+	</bean>
+	
+	<!-- <bean name="/push" class="cn.game.action.PushAction">
+		<property name="dataservice" ref="dataservice" />
+	</bean> -->
+	
+	<bean name="/pay" class="cn.game.action.pay.PayAction">
+		<property name="dataservice" ref="dataservice" />
+	</bean>
+</beans>

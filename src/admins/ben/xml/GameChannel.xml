@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="GameChannel">
+
+	<typeAlias alias="gamechannel" type="admins.ben.GameChannelVO" />
+	<parameterMap class="gamechannel" id="pm_gamechannel_without_id">
+		<parameter property="gameId" javaType="String" jdbcType="VARCHAR" />
+		<parameter property="channelId" javaType="int" jdbcType="INT" />
+		<parameter property="channelName" javaType="String" jdbcType="VARCHAR" />
+		<parameter property="stattype" javaType="int" jdbcType="INT" />
+		<parameter property="statper" javaType="int" jdbcType="INT" />
+	</parameterMap>
+
+	<select id="getList" resultClass="gamechannel">
+		<![CDATA[SELECT * FROM gamechannel ]]>
+	</select>
+	
+	<select id="getByChannelId" parameterClass="gamechannel" resultClass="gamechannel">
+		<![CDATA[
+			SELECT * FROM gamechannel where gameId=#gameId:VARCHAR# and channelId = #channelId:INT#
+		]]>
+	</select>
+
+	<insert id="save" parameterMap="pm_gamechannel_without_id">
+		<![CDATA[
+			INSERT INTO gamechannel (gameId,channelId,channelName,stattype,statper) VALUES(?,?,?,?,?)
+		]]>
+		
+	</insert>
+	 
+	<delete id="del" parameterClass="gamechannel" >
+		<![CDATA[
+			delete from gamechannel where gameId=#gameId:VARCHAR# and channelId = #channelId:INT#
+		]]>
+	</delete>
+	<update id="update">
+		
+		<![CDATA[
+			UPDATE gamechannel
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="channelName" prepend=",">
+				<![CDATA[
+					channelName= #channelName:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="gameId" prepend=",">
+				<![CDATA[
+					gameId= #gameId:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotEqual compareValue="-1" property="channelId" prepend=",">
+				<![CDATA[
+					channelId= #channelId:INT#
+				]]>
+			</isNotEqual>
+			
+				<isNotEqual compareValue="-1" property="stattype" prepend=",">
+				<![CDATA[
+					stattype= #stattype:INT#
+				]]>
+			</isNotEqual>
+				<isNotEqual compareValue="-1" property="statper" prepend=",">
+				<![CDATA[
+					statper= #statper:INT#
+				]]>
+			</isNotEqual>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			id = #id:INT#
+		</dynamic>
+	</update>
+</sqlMap>

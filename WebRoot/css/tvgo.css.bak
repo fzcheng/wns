@@ -1,0 +1,29 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+
+
+/************* Headtop ************/
+.tvgo{ width:970px; margin:0 auto; background-color:#fff;}
+.headtop{height:49px; margin:0 auto 12px auto; width:970px;}
+.tvgologo{width:381px;}
+.headtop_m{ width:280px;}
+.headtop_r{ width:309px;}
+
+
+/****** Menu *******/
+.menu{height:32px;  background-color:#060}
+.indexPosition{ height:43px;}
+.indexPosition .indexPosition_l{ width:7px;display:block;zoom:1;}
+.indexPosition .indexPosition_l img{display:block}
+.indexPosition .indexPosition_m{ width:956px; background-color:#13c5ef;height:43px;}
+.indexPosition .indexPosition_m .indexPositon_indexP{ margin:9px 0px 0 5px;  height:34px;}
+.indexPosition .indexPosition_m .indexPositon_indexP .indexPisiton_Index_l{width:168px; height:34px; background-image:url(../images/indexPosition_indexl.jpg);}
+.indexPosition .indexPosition_m .indexPositon_indexP .indexPosition_Index_r{background-image:url(../images/indexPosition_r.jpg); width:8px;height:34px;}
+.indexPosition .indexPosition_m .indexPositon_indexP .indexPositon_Index_m{ width:774px;height:34px; background-image:url(../images/indexPosition_bg.jpg);}
+
+
+
+/****** TVGObody *******/
+.tvgobody{ background-color:#13c5ef;height:557px;}

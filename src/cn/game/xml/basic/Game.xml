@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Game">
+
+	<typeAlias alias="game" type="cn.game.vo.basic.GameVO" />
+	<parameterMap class="game" id="pm_game_without_id">
+	    <parameter property="gameId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="gameName" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="shortName" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="appkey" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="flag" javaType="int" jdbcType="INT" />
+	</parameterMap>
+
+	<select id="getById" parameterClass="string" resultClass="game">
+		<![CDATA[
+	 		SELECT * FROM game WHERE gameId=#gameId:VARCHAR# limit 1 
+	 	]]>
+	</select>
+	
+	<select id="loadList" resultClass="game">
+		<![CDATA[
+	 		SELECT * FROM game  
+	 	]]>
+	</select>
+	
+	<insert id="save" parameterMap="pm_game_without_id">
+		<![CDATA[
+			INSERT INTO game (gameId,gameName,shortName,appkey,flag) VALUES (?,?,?,?,?)
+		]]>
+	</insert>
+	
+</sqlMap>

@@ -1,0 +1,102 @@
+body {
+	margin:0;
+    font-family: "宋体";
+    font-size: 15px;
+    background-color: #339999;
+}
+
+A:visited {font-size: 12px; color: #994455 ;text-decoration: underline;}
+A:link {font-size: 12px; color: #00CCFF ;text-decoration: underline;}
+A:hover{font-size : 12px;color : #993300 ;text-decoration : none;}
+
+A:link {color:#004455; text-decoration: none}
+A:visited {color:#004455; text-decoration: none}
+A:hover {color:red; text-decoration: none}
+#A:hover{text-decoration: underline; color:#44A938; position: relative; left: 1px; top: 1px; clip:  rect(   )}
+
+A.description:link {color:black; text-decoration: none}
+A.description:visited {color:white; text-decoration: none}
+A.description:hover {color:#cccccc; text-decoration: none}
+
+A.Nav_Exchange:link {
+	COLOR: #ffffff; FONT-FAMILY: "宋体"; font-size: 12px; padding-top: 8px; TEXT-DECORATION: none
+}
+A.Nav_Exchange:visited {
+	COLOR: #ffffff; FONT-FAMILY: "宋体"; font-size: 12px; padding-top: 8px; TEXT-DECORATION: none
+}
+A.Nav_Exchange:hover {
+	COLOR: #ccffff; FONT-FAMILY: "宋体"; font-size: 12px; padding-top: 8px; TEXT-DECORATION: underline
+}
+A.Nav_Exchange_Sub:link {
+	COLOR: #003399; FONT-FAMILY: "宋体"; font-size: 12px; padding-top: 8px; TEXT-DECORATION: none
+}
+A.Nav_Exchange_Sub:visited {
+	COLOR: #003399; FONT-FAMILY: "宋体"; font-size: 12px; padding-top: 8px; TEXT-DECORATION: none
+}
+A.Nav_Exchange_Sub:hover {
+	COLOR: #666666; FONT-FAMILY: "宋体"; font-size: 12px; padding-top: 8px; TEXT-DECORATION: underline
+}
+
+A.orange_link:link {
+	COLOR: #ff6600; TEXT-DECORATION: none
+}
+A.orange_link:visited {
+	COLOR: #ff6600; TEXT-DECORATION: none
+}
+A.orange_link:active {
+	COLOR: #ff6600; TEXT-DECORATION: none
+}
+A.orange_link:hover {
+	COLOR: #3366cc; TEXT-DECORATION: none
+}
+
+A.msglink:link {
+	COLOR: #3366cc; FONT-FAMILY: 宋体; FONT-SIZE: 9pt; TEXT-DECORATION: none
+}
+A.msglink:visited {
+	COLOR: #3366cc; FONT-FAMILY: 宋体; FONT-SIZE: 9pt; TEXT-DECORATION: none
+}
+A.msglink:active {
+	COLOR: #3366cc; FONT-FAMILY: 宋体; FONT-SIZE: 9pt; TEXT-DECORATION: none
+}
+A.msglink:hover {
+	COLOR: #ff6600; FONT-FAMILY: 宋体; FONT-SIZE: 9pt; TEXT-DECORATION: none
+}
+
+a.menu-item-dyna-up:link{
+    color:#000000; text-decoration: none;
+}
+a.menu-item-dyna-up:visited{
+    color:#000000; text-decoration: none;
+}
+a.menu-item-dyna-up:hover{
+    color:#000000; text-decoration: none;
+}
+a.menu-item-dyna-over:link{
+    color:#FFFFFF; text-decoration: none;
+}
+a.menu-item-dyna-over:visited{
+    color:#FFFFFF; text-decoration: none;
+}
+a.menu-item-dyna-over:hover{
+    color:#FFFFFF; text-decoration: none;
+}
+
+
+A.linkPriority:visited {font-size: 12px; font-weight: bold;color: white ;text-decoration: underline;}
+A.linkPriority:link {font-size: 12px; font-weight: bold;color: white ;text-decoration: underline;}
+A.linkPriority:active {font-size: 12px; font-weight: bold;color: white;text-decoration: underline;}
+A.linkPriority:hover {font-size: 12px; font-weight: bold;color: yellow;text-decoration: underline;}
+
+A.bbs:link {
+    COLOR: #FFOOOO; FONT-FAMILY: 宋体; FONT-SIZE: 11.5pt; VERTICAL-ALIGN: text-bottom
+}
+A.bbs:active {
+	COLOR: #FFOOOO; FONT-FAMILY: 宋体; FONT-SIZE: 11.5pt; TEXT-DECORATION: none
+}
+A.bbs:visited {
+	COLOR: #FFOOOO; FONT-FAMILY: 宋体; FONT-SIZE: 11.5pt; TEXT-DECORATION: none
+}
+A.bbs:hover{
+	COLOR: #FFOOOO; FONT-FAMILY: 宋体; FONT-SIZE: 11.5pt; TEXT-DECORATION: none; cursor:hand;
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+		
+		<!-- 运营数据日汇总 每天的23点59分59秒执行 -->
+		<bean id="operationsCountDayJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+			<property name="jobClass" value="admins.jobs.OperationsCountDayJob"/>
+			<property name="jobDataAsMap">
+				<map>
+					<entry key="payTotalService">
+						<ref bean="payTotalService"/>
+					</entry>
+				</map>
+			</property>
+		</bean>
+		<bean id="operationsCountDayCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+			<property name="jobDetail" ref="operationsCountDayJob" />
+			<property name="cronExpression" value="59 59 23 * * ?"/>
+		</bean>		
+		
+				<!-- 运营数据周汇总每周一的上午10:15分执行（统计上一周的数据）  -->
+		<bean id="operationsCountWeekJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+			<property name="jobClass" value="admins.jobs.OperationsCountWeekJob"/>
+			<property name="jobDataAsMap">
+				<map>
+					<entry key="payTotalService">
+						<ref bean="payTotalService"/>
+					</entry>
+				</map>
+			</property>
+		</bean>
+		<bean id="operationsCountWeekCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+			<property name="jobDetail" ref="operationsCountWeekJob" />
+			<property name="cronExpression" value="0 15 10 ? * MON"/>
+			 
+		</bean>	
+				<!-- 运营数据月汇总每个月的1号10:15分执行  -->
+		<bean id="operationsCountMonthJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+			<property name="jobClass" value="admins.jobs.OperationsCountMonthJob"/>
+			<property name="jobDataAsMap">
+				<map>
+					<entry key="payTotalService">
+						<ref bean="payTotalService"/>
+					</entry>
+				</map>
+			</property>
+		</bean>
+		<bean id="operationsCountMonthCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+			<property name="jobDetail" ref="operationsCountMonthJob" />
+			<property name="cronExpression" value="0 15 10 1 * ?"/>
+		</bean>	
+		
+		 
+		<!-- 定时器启动配置 -->
+		<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false" scope="singleton" >
+			<property name="triggers" >
+				<list>
+					<ref bean="operationsCountDayCronTrigger"/>
+					<ref bean="operationsCountWeekCronTrigger"/>
+					<ref bean="operationsCountMonthCronTrigger"/>
+					
+				</list>
+			</property>
+		</bean>
+</beans>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WeekLogin">
+
+	<typeAlias alias="weeklogin" type="cn.game.vo.analyse.WeekLoginVO" />
+	<parameterMap class="weeklogin" id="pm_weeklogin_without_id">
+		<parameter property="date" javaType="String" jdbcType="DATE" />
+		<parameter property="regcount" javaType="int" jdbcType="INT" />
+		<parameter property="logincount" javaType="int" jdbcType="INT" />
+		<parameter property="lcount2" javaType="int" jdbcType="INT" />
+		<parameter property="lcount3" javaType="int" jdbcType="INT" />
+		<parameter property="lcount4" javaType="int" jdbcType="INT" />
+	</parameterMap>
+
+	<sql id="byCondition">
+		<![CDATA[
+		   id = #id:INT#
+	    ]]>
+	</sql>
+
+	<select id="getById" parameterClass="int" resultClass="weeklogin">
+		<![CDATA[
+			select * from analyseweek where id=#id:INT#
+		]]>
+	</select>
+
+	<select id="getByDate" parameterClass="string" resultClass="weeklogin">
+		<![CDATA[
+			select * from analyseweek where date = #date:DATE# limit 1
+		]]>
+	</select>
+
+	<update id="update" parameterClass="weeklogin">
+		<![CDATA[
+			UPDATE analyseweek
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="regcount" prepend=",">
+				<![CDATA[
+					regcount = #regcount:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="logincount" prepend=",">
+				<![CDATA[
+					logincount = #logincount:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="lcount2" prepend=",">
+				<![CDATA[
+					lcount2 = #lcount2:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="lcount3" prepend=",">
+				<![CDATA[
+					lcount3 = #lcount3:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="lcount4" prepend=",">
+				<![CDATA[
+					lcount4 = #lcount4:INT#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			id = #id:INT#
+		</dynamic>
+	</update>
+
+	<insert id="save" parameterMap="pm_weeklogin_without_id">
+		<![CDATA[
+			INSERT INTO analyseweek (date, regcount, logincount, lcount2, lcount3, lcount4) VALUES (?,?,?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+</sqlMap>

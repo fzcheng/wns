@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Section">
+
+	<typeAlias alias="section" type="admins.ben.SectionVO" />
+	<parameterMap class="section" id="pm_section_without_id">
+		<parameter property="sectionId" javaType="int" jdbcType="INT" />
+		<parameter property="sectionName" javaType="String" jdbcType="VARCHAR" />
+	</parameterMap>
+	
+	<select id="getSectionById" parameterClass="int" resultClass="Section">
+		<![CDATA[
+			SELECT * FROM section where sectionId = #value#
+		]]>
+	</select>
+
+	<select id="getList" resultClass="Section">
+		<![CDATA[SELECT * FROM section ]]>
+	</select>
+</sqlMap>

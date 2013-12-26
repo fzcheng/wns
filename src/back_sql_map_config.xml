@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" maxRequests="256" maxSessions="64"
+		maxTransactions="16" useStatementNamespaces="true" />
+		
+	<sqlMap resource="admins/ben/xml/BackUser.xml"/>
+	<sqlMap resource="admins/ben/xml/BackPower.xml"/>
+	<sqlMap resource="admins/ben/xml/BackRole.xml"/>
+	<sqlMap resource="admins/ben/xml/BackRolePower.xml"/>
+	<sqlMap resource="admins/ben/xml/BackOperationLog.xml"/>
+	<sqlMap resource="admins/ben/xml/BackLoginLog.xml"/>
+	<sqlMap resource="admins/ben/xml/onlinehelp/OnlineHelp.xml"/>
+	<sqlMap resource="admins/ben/xml/onlinehelplog/OnlinehelpLog.xml"/>
+	<sqlMap resource="admins/ben/xml/gmrecord/GMRecord.xml"/>
+	<sqlMap resource="admins/ben/xml/QuickAnswer.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/DayLogin.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/WeekLogin.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/MonthLogin.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/LevAll.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/DayOpsummary.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/DayOnlinesummary.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/DayLoginlevel.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/DayUsersummary.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/Revisit.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/DayConsumeCount.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/MonthOpsummary.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/WeekOpsummary.xml"/>
+	<sqlMap resource="admins/ben/xml/analyse/Channel.xml"/>
+
+	<sqlMap resource="admins/ben/xml/gmoperating/Placard.xml"/>
+	<sqlMap resource="admins/ben/xml/gmoperating/PlacardLogOut.xml"/>
+	<sqlMap resource="admins/ben/xml/gmoperating/AwardLog.xml"/>
+	<sqlMap resource="admins/ben/xml/buglist/buglist.xml"/>
+	<sqlMap resource="admins/ben/xml/buglist/workHandOver.xml"/>
+</sqlMapConfig>

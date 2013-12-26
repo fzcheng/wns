@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BackRolePower">
+
+	<typeAlias alias="backrolepower" type="admins.ben.BackRolePowerVO" />
+	<parameterMap class="backrolepower" id="pm_backrolepower_without_id">
+		<parameter property="roleId" javaType="int" jdbcType="INT" />
+		<parameter property="powerId" javaType="int" jdbcType="INT" />
+		<parameter property="state" javaType="int" jdbcType="INT" />
+		<parameter property="createTime" javaType="string" jdbcType="DATETIME" />
+	</parameterMap>
+	
+	
+	<sql id="byBackRolePowerIDCondition">
+		<![CDATA[
+		   id = #id:INT#
+	    ]]>
+	</sql>
+	
+	<insert id="save" parameterMap="pm_backrolepower_without_id">
+		<![CDATA[
+			INSERT INTO back_role_power (roleId,powerId,state,createTime) VALUES(?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+	
+	<delete id="delete" parameterClass="int" >
+		<![CDATA[
+			delete from back_role_power 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byBackRolePowerIDCondition" />
+		</dynamic>
+	</delete>
+
+	<update id="update" parameterClass="backrolepower">
+		<![CDATA[
+			UPDATE back_role_power 
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="roleId" prepend=",">
+				<![CDATA[
+					roleId = #roleId:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="powerId" prepend=",">
+				<![CDATA[
+					powerId = #powerId:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="state" prepend=",">
+				<![CDATA[
+					state = #state:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="createTime" prepend=",">
+				<![CDATA[
+					createTime = #createTime:DATETIME#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byBackRolePowerIDCondition" />
+		</dynamic>
+	</update>
+	
+	<select id="findBackRolePowerList" resultClass="backrolepower">
+		<![CDATA[
+			SELECT * FROM back_role_power where state = 0;
+		]]>
+	</select>
+	
+	<select id="findBackRolePowerByRoleId" parameterClass="int"  resultClass="backrolepower">
+		<![CDATA[
+			SELECT * FROM back_role_power WHERE  roleId=#roleId:INT# and state = 0
+		]]>
+	</select>
+	
+	<select id="getBackRolePowerById" parameterClass="int" resultClass="backrolepower">
+		<![CDATA[
+			SELECT * FROM back_role_power 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byBackRolePowerIDCondition" />
+		</dynamic>
+	</select>
+	
+	<select id="findBackRolePowerByPowerId" parameterClass="int" resultClass="backrolepower">
+		<![CDATA[
+			SELECT * FROM back_role_power WHERE  powerId=#powerId:INT# 
+		]]>
+	</select>
+	<delete id="deleteRolePowerByRoleIdAndPowerId" parameterClass="backrolepower" >
+		<![CDATA[
+			delete from back_role_power WHERE powerId=#powerId:INT# AND roleId=#roleId:INT#
+		]]>
+	</delete>
+	
+	<select id="getBackRolePowerByRoleIdAndPowerId" parameterClass="backrolepower" resultClass="backrolepower">
+		<![CDATA[
+			SELECT * FROM back_role_power WHERE  powerId=#powerId:INT# AND roleId=#roleId:INT#
+		]]>
+	</select>
+	
+	<select id="getRoleFuncList" resultClass="backrolepower">
+		<![CDATA[
+			SELECT * FROM back_role_power WHERE state = 1;
+		]]>
+	</select>
+</sqlMap>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Channel">
+
+	<typeAlias alias="channel" type="admins.ben.ChannelVO" />
+	<parameterMap class="channel" id="pm_channel_without_id">
+		<parameter property="channelId" javaType="int" jdbcType="INT" />
+		<parameter property="channelName" javaType="String" jdbcType="VARCHAR" />
+	</parameterMap>
+	
+	<select id="getChannelById" parameterClass="string" resultClass="channel">
+		<![CDATA[
+			SELECT * FROM channel where channelId = #value#
+		]]>
+	</select>
+
+	<select id="getList" resultClass="channel">
+		<![CDATA[SELECT * FROM channel ]]>
+	</select>
+	
+	<select id="getByChannelId" parameterClass="channel" resultClass="channel">
+		<![CDATA[
+			SELECT * FROM channel where channelId = #channelId:INT#
+		]]>
+	</select>
+
+	<insert id="save" parameterMap="pm_channel_without_id">
+		<![CDATA[
+			INSERT INTO channel (channelId,channelName) VALUES(?,?)
+		]]>
+	</insert>
+	 
+	<delete id="del" parameterClass="channel" >
+		<![CDATA[
+			delete from channel where channelId = #channelId:INT#
+		]]>
+	</delete>
+	<update id="update">
+		
+		<![CDATA[
+			UPDATE channel
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="channelName" prepend=",">
+				<![CDATA[
+					channelName= #channelName:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			channelId = #channelId:INT#
+		</dynamic>
+	</update>
+</sqlMap>

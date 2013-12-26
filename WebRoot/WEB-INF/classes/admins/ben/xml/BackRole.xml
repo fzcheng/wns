@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BackRole">
+
+	<typeAlias alias="backrole" type="admins.ben.BackRoleVO" />
+	<parameterMap class="backrole" id="pm_backrole_without_id">
+		<parameter property="roleName" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="roleDsc" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="createTime" javaType="string" jdbcType="DATETIME" />
+	</parameterMap>
+	
+	<sql id="byBackRoleIDCondition">
+		<![CDATA[
+		   roleId = #roleId:INT#
+	    ]]>
+	</sql>
+	<select id="getBackRoleById" parameterClass="int" resultClass="backrole">
+		<![CDATA[
+			SELECT * FROM back_role
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byBackRoleIDCondition" />
+		</dynamic>
+	</select>
+	
+	<insert id="save" parameterMap="pm_backrole_without_id">
+		<![CDATA[
+			INSERT INTO back_role (roleName,roleDsc,createTime) VALUES(?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+	
+	<select id="checkRoleName" parameterClass="string" resultClass="backrole">
+		<![CDATA[
+			SELECT * FROM back_role WHERE  roleName=#roleName:VARCHAR#
+		]]>
+	</select>
+	
+	<delete id="delete" parameterClass="int" >
+		<![CDATA[
+			delete from back_role 
+		]]>
+		<dynamic prepend="WHERE">
+			<include refid="byBackRoleIDCondition" />
+		</dynamic>
+	</delete>
+
+	<update id="update" parameterClass="backrole">
+		<![CDATA[
+			UPDATE back_role 
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="roleName" prepend=",">
+				<![CDATA[
+					roleName = #roleName:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="roleDsc" prepend=",">
+				<![CDATA[
+					roleDsc = #roleDsc:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="createTime" prepend=",">
+				<![CDATA[
+					createTime = #createTime:DATETIME#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<include refid="byBackRoleIDCondition" />
+		</dynamic>
+	</update>
+	
+	<select id="findBackRoleList" resultClass="backrole">
+		<![CDATA[
+			SELECT * FROM back_role
+		]]>
+	</select>
+
+</sqlMap>

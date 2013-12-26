@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="DayOnlineNum">
+
+	<typeAlias alias="dayonlinenum" type="cn.game.vo.analyse.DayOnlineNumVO" />
+	<parameterMap class="dayonlinenum" id="pm_dayonlinenum_without_id">
+		<parameter property="dtime" javaType="String" jdbcType="DATE" />
+		<parameter property="num" javaType="int" jdbcType="INT" />
+	</parameterMap>
+
+	<sql id="byCondition">
+		<![CDATA[
+		   id = #id:INT#
+	    ]]>
+	</sql>
+
+	<select id="getListByDate" parameterClass="dayonlinenum" resultClass="dayonlinenum">
+		<![CDATA[
+			select * from dayonlinenum 
+		]]>
+		<dynamic prepend="where">
+			<isNotNull property="begindate" prepend="AND">
+				<![CDATA[
+					dtime >= #begindate:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="enddate" prepend="AND">
+				<![CDATA[
+					dtime <= #enddate:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+		
+	</select>
+
+	<insert id="save" parameterMap="pm_dayonlinenum_without_id">
+		<![CDATA[
+			INSERT INTO dayonlinenum (dtime, num) VALUES (?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+</sqlMap>

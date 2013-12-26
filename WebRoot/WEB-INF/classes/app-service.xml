@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="recordservice"  class="cn.game.service.record.RecordService">
+		<property name="recorddao" ref="recorddao" />
+		<property name="dataservice" ref="dataservice" />
+	</bean>
+	
+	<bean id="payrecordservice"  class="cn.game.service.record.PayRecordService">
+		<property name="payrecorddao" ref="payrecorddao" />
+		<property name="dataservice" ref="dataservice" />
+		<property name="recordservice" ref="recordservice" />
+	</bean>
+	
+	<bean id="dataservice" class="cn.game.service.DataService"
+		lazy-init="false" scope="singleton" init-method="init">
+		<!-- <property name="initservice" ref="initservice" /> -->
+	</bean> 
+</beans>

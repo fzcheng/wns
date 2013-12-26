@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Record">
+
+	<typeAlias alias="record" type="cn.game.vo.record.RecordVO" />
+	<parameterMap class="record" id="pm_record_without_id">
+		<parameter property="mtId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="keyValue1" javaType="int" jdbcType="INT" />
+		<parameter property="keyValue2" javaType="int" jdbcType="INT" />
+		<parameter property="keyValue3" javaType="int" jdbcType="INT" />
+		<parameter property="keyValue4" javaType="int" jdbcType="INT" />
+		<parameter property="keyValue5" javaType="int" jdbcType="INT" />
+		<parameter property="keyValue6" javaType="int" jdbcType="INT" />
+		<parameter property="recordData" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="baseCoin" javaType="int" jdbcType="INT" />
+		<parameter property="secondCoin" javaType="int" jdbcType="INT" />
+		<parameter property="thirdCoin" javaType="int" jdbcType="INT" />
+		<parameter property="createTime" javaType="string" jdbcType="DATETIME" />
+		<parameter property="lastTime" javaType="string" jdbcType="DATETIME" />
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_record_without_id">
+		<![CDATA[
+			INSERT INTO $tableName$ (mtId,keyValue1,keyValue2,keyValue3,keyValue4,keyValue5,keyValue6,recordData,baseCoin,secondCoin,thirdCoin,createTime,lastTime) 
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+		]]>
+	</insert>
+
+	<update id="update" parameterClass="record">
+		<![CDATA[
+			UPDATE $tableName$
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="keyValue1" prepend=",">
+				<![CDATA[
+					keyValue1 = #keyValue1:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="keyValue2" prepend=",">
+				<![CDATA[
+					keyValue2 = #keyValue2:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="keyValue3" prepend=",">
+				<![CDATA[
+					keyValue3 = #keyValue3:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="keyValue4" prepend=",">
+				<![CDATA[
+					keyValue4 = #keyValue4:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="keyValue5" prepend=",">
+				<![CDATA[
+					keyValue5 = #keyValue5:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="keyValue6" prepend=",">
+				<![CDATA[
+					keyValue6 = #keyValue6:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="recordData" prepend=",">
+				<![CDATA[
+					recordData = #recordData:VARCHAR#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="lastTime" prepend=",">
+				<![CDATA[
+					lastTime = #lastTime:DATETIME#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<isNotNull property="mtId" prepend="">
+				<![CDATA[
+					mtId = #mtId:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+	</update>
+	
+	<update id="update2" parameterClass="record">
+		<![CDATA[
+			UPDATE $tableName$
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="recordData" prepend=",">
+				<![CDATA[
+					recordData = #recordData:VARCHAR#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="lastTime" prepend=",">
+				<![CDATA[
+					lastTime = #lastTime:DATETIME#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<isNotNull property="mtId" prepend="">
+				<![CDATA[
+					mtId = #mtId:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+	</update>
+	
+	<update id="updateCoin" parameterClass="record">
+		<![CDATA[
+			UPDATE $tableName$
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="recordData" prepend=",">
+				<![CDATA[
+					recordData = #recordData:VARCHAR#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="baseCoin" prepend=",">
+				<![CDATA[
+					baseCoin = #baseCoin:INT#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="secondCoin" prepend=",">
+				<![CDATA[
+					secondCoin = #secondCoin:INT#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="thirdCoin" prepend=",">
+				<![CDATA[
+					thirdCoin = #thirdCoin:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="lastTime" prepend=",">
+				<![CDATA[
+					lastTime = #lastTime:DATETIME#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<isNotNull property="mtId" prepend="">
+				<![CDATA[
+					mtId = #mtId:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+	</update>
+	
+	<select id="getById" parameterClass="record" resultClass="record">
+		select *,"$tableName$" as tableName from  $tableName$ where mtId = #mtId:VARCHAR#
+	</select>
+</sqlMap>

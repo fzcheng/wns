@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Hztask">
+
+	<typeAlias alias="hztask" type="cn.game.vo.basic.HzTaskVO" />
+	
+	<select id="getById" parameterClass="string" resultClass="game">
+		<![CDATA[
+	 		SELECT * FROM hz_task WHERE TaskID=#TaskID:INT# 
+	 	]]>
+	</select>
+	
+	<select id="loadList" resultClass="game">
+		<![CDATA[
+	 		SELECT * FROM hz_task  
+	 	]]>
+	</select>
+	
+</sqlMap>
