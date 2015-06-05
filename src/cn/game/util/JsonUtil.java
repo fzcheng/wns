@@ -11,6 +11,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
+import cn.game.vo.sms.MessageVO;
 
 public class JsonUtil {
 
@@ -274,9 +275,32 @@ public class JsonUtil {
 	 */
 
 	public static void main(String[] args) {
-
-		// TODO 自动生成方法存根
-
+//		List<MessageVO> list = new ArrayList<MessageVO>();
+//		for(int i = 0; i < 3; i ++)
+//		{
+//			MessageVO msg = new MessageVO();
+//			msg.setMissionId(i);
+//			msg.setMobile("139"+i);
+//			msg.setContent("content"+i);
+//			
+//			list.add(msg);
+//		}
+//		
+//		String sss = JsonUtil.getJsonString4JavaPOJO(list);
+//		System.out.println(sss);
+		
+		
+		String result = "[{\"content\":\"content0\",\"missionId\":0,\"status\":0,\"mobile\":\"1390\"}," +
+				"{\"content\":\"content1\",\"missionId\":1,\"status\":0,\"mobile\":\"1391\"}," +
+				"{\"content\":\"content2\",\"missionId\":2,\"status\":0,\"mobile\":\"1392\"}]";
+		List<Object> list = JsonUtil.getList4Json(result, MessageVO.class);
+		
+		List<MessageVO> msglist = new ArrayList<MessageVO>();
+		for(Object obj : list)
+		{
+			MessageVO msg = (MessageVO)obj;
+			msglist.add(msg);
+		}
 	}
 
 	public static String getJsonStringFromMap(Map<String, Object> map) {

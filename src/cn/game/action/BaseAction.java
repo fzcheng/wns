@@ -1,6 +1,5 @@
 package cn.game.action;
 
-import java.net.URLDecoder;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -90,10 +89,10 @@ public class BaseAction extends DispatchAction {
         	return dispatchMethod(mapping, form, request, response, "error");
         }
         
-        System.out.println("clientPublicKey:"+clientPublicKey);
-        System.out.println("encryptkey:"+encryptkey);
-		System.out.println("gameId:"+gameId);
-		System.out.println("data:"+data);
+        //System.out.println("clientPublicKey:"+clientPublicKey);
+        //System.out.println("encryptkey:"+encryptkey);
+		//System.out.println("gameId:"+gameId);
+		//System.out.println("data:"+data);
         
         String dmerchantAesKey = RSA.decrypt(encryptkey, ServerKey.serverPrivateKey);
 		String dinfo = AES.decryptFromBase64(data, dmerchantAesKey);
@@ -107,14 +106,22 @@ public class BaseAction extends DispatchAction {
         	return dispatchMethod(mapping, form, request, response, "error");
         }
 		String name = (String)dmap.get("comd");
+		
 		if("".equals(name) || name == null)
         {
         	request.setAttribute("error", "comd错误");
         	return dispatchMethod(mapping, form, request, response, "error");
         }
 		
+		System.out.println("comd:"+name);
 		for (Map.Entry<String, Object> entry : dmap.entrySet()) {
 			request.setAttribute(entry.getKey(), entry.getValue());
+			try{
+				System.out.println(entry.getKey() + " : " + entry.getValue());
+			}
+			catch(Exception e){
+				
+			}
 		}
 		
 		
@@ -195,5 +202,17 @@ public class BaseAction extends DispatchAction {
 		errrsp.write();
 
 		return null;
+	}
+	
+	public int parseInt(String str)
+	{
+		try{
+			int r = Integer.valueOf(str);
+			return r;
+		}
+		catch(Exception e)
+		{
+			return 0;
+		}
 	}
 }

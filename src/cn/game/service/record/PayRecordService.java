@@ -52,7 +52,7 @@ public class PayRecordService{
 				if(count == 0)
 					add = pay.getGameMoney() * 2;
 				
-				RecordVO record = recordservice.getrecord(pay.getUserId(), pay.getGameId());
+				RecordVO record = recordservice.getrecord(pay.getUserId(), pay.getPlat(), pay.getGameId());
 				if(record != null)
 				{
 					//增加货币
@@ -85,7 +85,7 @@ public class PayRecordService{
 			//已处理
 			if("S".equals(oldpay.getStatus()))
 			{
-				RecordVO record = recordservice.getrecord(pay.getUserId(), pay.getGameId());
+				RecordVO record = recordservice.getrecord(pay.getUserId(), pay.getPlat(), pay.getGameId());
 				if(record != null)
 				{
 					rm.setDetail("操作成功");

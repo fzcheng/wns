@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BillBlock">
+
+	<typeAlias alias="billblock" type="cn.bill.base.vo.BillBlockVO" />
+	<parameterMap class="billblock" id="pm_billblock_without_id">
+		<parameter property="phonenum" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="imsi" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="reason" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="opened" javaType="int" jdbcType="INT" />
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_billblock_without_id">
+		<![CDATA[
+			INSERT INTO bill_block (phonenum,imsi,reason,opened) 
+			VALUES (?,?,?,?)
+		]]>
+	</insert>
+
+	<select id="getByPhone" parameterClass="string" resultClass="billblock">
+		select *,"bill_block" as tableName from bill_block where phonenum = #VARCHAR# limit 1
+	</select>
+	
+	<select id="getByImsi" parameterClass="string" resultClass="billblock">
+		select *,"bill_block" as tableName from bill_block where imsi = #VARCHAR# limit 1
+	</select>
+	
+</sqlMap>

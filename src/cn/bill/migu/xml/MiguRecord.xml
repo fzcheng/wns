@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MiguRecord">
+
+	<typeAlias alias="migurecord" type="cn.bill.migu.vo.MiguRecordVO" />
+	<parameterMap class="migurecord" id="pm_migurecord_without_id">
+		<parameter property="orderid" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="channelid" javaType="int" jdbcType="INT" />
+		<parameter property="codeid" javaType="int" jdbcType="INT" />
+		<parameter property="code" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="port" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="rmb" javaType="int" jdbcType="INT" />
+		<parameter property="phonenumber" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="imsi" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="status" javaType="int" jdbcType="INT" />
+		<parameter property="create_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="modify_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="transfer_status" javaType="int" jdbcType="INT" />
+		<parameter property="transfer_url" javaType="string" jdbcType="VARCHAR" />
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_migurecord_without_id">
+		<![CDATA[
+			INSERT INTO migu_record (orderid,channelid,codeid,code,port,rmb,phonenumber,imsi,status,create_time,modify_time,transfer_status,transfer_url) 
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<select id="getByCode" parameterClass="string" resultClass="migurecord">
+		select * from  migu_record where code = #VARCHAR# order by id desc limit 1
+	</select>
+	
+	<update id="update_status" parameterClass="migurecord">
+		<![CDATA[
+			UPDATE migu_record
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="transfer_status" prepend=",">
+				<![CDATA[
+					transfer_status = #transfer_status:INT#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="status" prepend=",">
+				<![CDATA[
+					status = #status:INT#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="modify_time" prepend=",">
+				<![CDATA[
+					modify_time = #modify_time:DATETIME#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="transfer_url" prepend=",">
+				<![CDATA[
+					transfer_url = #transfer_url:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			id = #id:INT#
+		</dynamic>
+	</update>
+</sqlMap>

@@ -61,6 +61,13 @@
 			<param-name>detail</param-name>
 			<param-value>3</param-value>
 		</init-param>
+		
+		<init-param>
+		    <param-name>downloadPath</param-name>
+		    <!-- <param-value>/Users/a/Documents/apache-tomcat-6.0.37/webapps/p/</param-value> -->
+		    <param-value>/usr/local/tomcat/webapps/p/</param-value>
+		</init-param>
+
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet-mapping>

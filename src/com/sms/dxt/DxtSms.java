@@ -7,19 +7,35 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import cn.game.pay.mmarket.SyncXMLUtils;
+import cn.game.service.DataService;
+import cn.game.vo.sms.SmsChannelVO;
+import cn.org.util.SpringUtils;
+
 import com.sms.IPushSms;
-import com.sms.uniproud.SMSClient;
-import com.sms.uniproud.ServiceXMLAnalysis;
-import com.sms.uniproud.ToServerXML;
 
 public class DxtSms implements IPushSms {
 
 	public static String url = "http://www.guanggaoziyuan.com:8802/sms.aspx";
-	public static String userid = "30942";
-	public static String account = "1225";
-	public static String pwd = "123456aa";
+//	public static String userid = "30942";
+//	public static String account = "1225";
+//	public static String pwd = "123456aa";
+	
 	@Override
 	public int sendSms(String telnum, String content) {
+	
+		DataService dataservice = (DataService)SpringUtils.getBean("dataservice");
+		
+		SmsChannelVO smschannel = dataservice.getSmsChannelById("dxt");
+		if(smschannel == null)
+		{
+			return -99;
+		}
+		
+		String userid = smschannel.getUserid();
+		String account = smschannel.getAccount();
+		String pwd = smschannel.getPwd();
+		
 		HttpURLConnection connection = null;
 		try {
 			String line;
@@ -36,15 +52,17 @@ public class DxtSms implements IPushSms {
 						+ "&mobile=" + telnum
 						+ "&content=" + content
 						+ "&sendTime=&extno=";
+				
+				System.out.println("send data:" + telnum + "-" + content);
 				OutputStream out = connection.getOutputStream();
 //				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter (out));
 //				writer.append(jsondata);
-				out.write(data.getBytes());
+				out.write(data.getBytes("utf-8"));
 				out.flush();
 				
 				InputStream in = connection.getInputStream();
 				StringBuilder sb = new StringBuilder();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(in, "utf-8"));
 
 				while ((line = reader.readLine()) != null)
 					sb.append(line);
@@ -53,9 +71,18 @@ public class DxtSms implements IPushSms {
 				connection.disconnect();
 				String result = new String(sb);
 				System.out.println(result);
+				
+				//解析xml数据
+				SyncXMLUtils utils = new SyncXMLUtils();
+				//DxtResultVO r = (DxtResultVO)utils.xml2Vo(new String(result.getBytes(), "utf-8"), "returnsms", DxtResultVO.class.getName());
+				DxtResultVO r = (DxtResultVO)utils.xml2Vo(result, "returnsms", DxtResultVO.class.getName());
+				System.out.println("message:" + r.getMessage());
+				
+				if(r.getReturnstatus().equals("Success"))
+					return 0;
+				
 		} catch (Exception e) {
-//			logger.error(String.format("validator token error %s \n %s",
-//					new Object[] { e.getMessage(), e.getCause() }));
+			e.printStackTrace();
 		}
 		
 		return -1;
@@ -64,18 +91,6 @@ public class DxtSms implements IPushSms {
 	public static void main(String[] args) {
 		DxtSms client = new DxtSms();
 
-		client.sendSms("13818365949", "欢迎下载桃色恋人2：http://apk.mmarket.com/rs/publish/prepublish4/23/2013/11/13/a116/611/31611116/myheartmm1113.apk");
-
-		// 查询发送清单接口
-		// String queryForSmsBack =
-		// client.SendReceive(ToServerXML.getQueryResultForSmsTaskXML("帐号",
-		// "密码"),"urn:QueryResultForSmsTask"); //
-		// ServiceXMLAnalysis.getQueryResultForSmsTaskBack(queryForSmsBack);
-
-		// 短信接收接口
-		// String recvSmsBack =
-		// client.SendReceive(ToServerXML.getRecvSmsResultXML("帐号",
-		// "密码"),"urn:QueryRecvSmsTask"); //
-		// ServiceXMLAnalysis.getRecvSMSBack(recvSmsBack);
+		client.sendSms("13818365949", "欢迎下载桃色恋人2：http://apk.mmarket.com/myheartmm1113.apk");
 	}
 }

@@ -5,6 +5,11 @@
 	
 	<bean name="/record" class="cn.game.action.RecordAction">
 		<property name="recordservice" ref="recordservice" />
+		<property name="suggestservice" ref="suggestservice" />
+	</bean>
+	
+	<bean name="/top" class="cn.game.action.TopAction" init-method="init">
+		<property name="recordservice" ref="recordservice" />
 	</bean>
 	
 	<bean name="/data" class="cn.game.action.DataAction">
@@ -17,5 +22,11 @@
 	
 	<bean name="/pay" class="cn.game.action.pay.PayAction">
 		<property name="dataservice" ref="dataservice" />
+	</bean>
+	
+	
+	
+	<bean name="/code" class="cn.bill.migu.action.MiguAction">
+		<property name="miguservice" ref="miguservice" />
 	</bean>
 </beans>

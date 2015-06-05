@@ -3,9 +3,12 @@ package cn.game.inter.service;
 import java.util.List;
 
 import cn.game.pay.mmarket.PayCodeVO;
+import cn.game.vo.basic.ChannelVO;
 import cn.game.vo.basic.GameVO;
 import cn.game.vo.basic.HzDayTaskVO;
 import cn.game.vo.basic.HzTaskVO;
+import cn.game.vo.sms.SmsChannelVO;
+import cn.game.vo.sms.SmsGameVO;
 
 public interface IDataService {
 	
@@ -37,4 +40,17 @@ public interface IDataService {
 	public List<HzDayTaskVO> getHzDayTaskList();
 
 	public void loadHzDayTask();
+	
+	public ChannelVO getChannelById(String id);
+	public List<ChannelVO> getChannelList();
+	public void loadChannel();
+	public SmsGameVO getSmsGameById(String gameid, String channelid);
+	public List<SmsGameVO> getSmsGameList();
+	public void loadSmsGame();
+
+
+	public SmsChannelVO getSmsChannelById(String name);
+	public List<SmsChannelVO> getSmsChannelList();
+	public void loadSmsChannel();
+	
 }

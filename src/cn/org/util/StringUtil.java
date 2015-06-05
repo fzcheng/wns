@@ -16,6 +16,8 @@ public class StringUtil {
 	public static String getFromMap(TreeMap<String, Object> map) {
 		StringBuffer sbuffer = new StringBuffer();
 		for (Map.Entry<String, Object> entry : map.entrySet()) {
+			if("empty".equals(entry.getKey()))
+				continue;
 			sbuffer.append(entry.getKey());
 			//sbuffer.append("-");
 			sbuffer.append(entry.getValue());
@@ -29,9 +31,11 @@ public class StringUtil {
 	
 	public static String getFromMap(TreeMap<String, Object> map, String excludeKey) {
 		StringBuffer sbuffer = new StringBuffer();
+		//System.out.println("getFromMap");
 		for (Map.Entry<String, Object> entry : map.entrySet()) {
 			if(excludeKey.equals(entry.getKey()))
 				continue;
+			//System.out.println("\"" + entry.getKey() + "\":\"" + entry.getValue() + "\"");
 			sbuffer.append(entry.getKey());
 			//sbuffer.append("-");
 			sbuffer.append(entry.getValue());

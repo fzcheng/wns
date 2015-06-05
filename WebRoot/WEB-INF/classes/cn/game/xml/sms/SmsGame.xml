@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SmsGame">
+
+	<typeAlias alias="smsgame" type="cn.game.vo.sms.SmsGameVO" />
+
+	<select id="getById" parameterClass="string" resultClass="smsgame">
+		<![CDATA[
+	 		SELECT * FROM smsgame WHERE gameId=#gameId:VARCHAR# limit 1 
+	 	]]>
+	</select>
+	
+	<select id="loadList" resultClass="smsgame">
+		<![CDATA[
+	 		SELECT * FROM smsgame  
+	 	]]>
+	</select>
+
+</sqlMap>

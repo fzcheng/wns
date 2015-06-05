@@ -11,6 +11,7 @@ import cn.game.vo.BaseVO;
 public class PayrecordVO extends BaseVO{
 	int id;
 	String userId;
+	String plat;
 	String gameId;
 	String orderId;
 	String channelName;
@@ -28,6 +29,7 @@ public class PayrecordVO extends BaseVO{
 	public PayrecordVO(SinaWEIPayVO weipay)
 	{
 		userId = weipay.getOrder_uid();
+		plat = "sinawei";
 		gameId = weipay.getGameId();
 		orderId = weipay.getOrder_id();
 		channelName = "sinawei";
@@ -40,6 +42,7 @@ public class PayrecordVO extends BaseVO{
 	
 	public PayrecordVO(SyncAppOrderReq req, PayCodeVO paycode) {
 		userId = req.getUid();
+		plat = req.getPlat();
 		gameId = paycode.getGameId();
 		orderId = req.getOrderID();
 		channelName = "mmarket";
@@ -52,6 +55,7 @@ public class PayrecordVO extends BaseVO{
 
 	public PayrecordVO(Trusted2ServQueryResp req, PayCodeVO paycode) {
 		userId = req.getUid();
+		plat = req.getPlat();
 		gameId = paycode.getGameId();
 		orderId = req.getOrderID();
 		channelName = "mmarket";
@@ -127,5 +131,13 @@ public class PayrecordVO extends BaseVO{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getPlat() {
+		return plat;
+	}
+
+	public void setPlat(String plat) {
+		this.plat = plat;
 	}
 }

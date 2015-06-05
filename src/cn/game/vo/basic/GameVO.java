@@ -11,6 +11,7 @@ public class GameVO extends BasicVO{
 	String gameId;
 	String gameName = "";
 	String shortName = "";
+	String gamenotice = "";
 	String appkey = "";
 	String publicKey = "";
 	int flag;
@@ -97,5 +98,13 @@ public class GameVO extends BasicVO{
 
 	public void setMmOrderType(int mmOrderType) {
 		this.mmOrderType = mmOrderType;
+	}
+
+	public String getGamenotice() {
+		return gamenotice;
+	}
+
+	public void setGamenotice(String gamenotice) {
+		this.gamenotice = gamenotice;
 	}
 }

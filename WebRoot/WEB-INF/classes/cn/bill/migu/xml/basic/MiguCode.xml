@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MiguCode">
+
+	<typeAlias alias="migucode" type="cn.bill.migu.vo.basic.MiguCodeVO" />
+	
+	<select id="loadList" resultClass="migucode">
+		<![CDATA[
+	 		SELECT * FROM migu_code  
+	 	]]>
+	</select>
+
+	<select id="getByKey" parameterClass="String" resultClass="migucode">
+		select * from  migu_code where codeid = #varchar#
+	</select>
+	
+	<update id="update" parameterClass="migucode">
+		<![CDATA[
+			UPDATE migu_code
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="cid" prepend=",">
+				<![CDATA[
+					cid = #cid:INT#
+				]]>
+			</isNotNull>
+			
+		</dynamic>
+		<dynamic prepend="WHERE">
+			codeid = #codeid:INT#
+		</dynamic>
+	</update>
+	
+</sqlMap>

@@ -6,9 +6,11 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
+
+import net.sf.json.JSONObject;
 
 import cn.game.vo.record.KeyValue;
 import cn.org.util.HashHex;
@@ -1020,6 +1024,16 @@ public class DateUtil {
 	}
 
 	/**
+	 * 得到当前时间字符串
+	 * 
+	 * @param args
+	 */
+	public static String getCurrentTimeStrsS() {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSSSSSSS");
+		return formatter.format(new Date());
+	}
+	
+	/**
 	 * 得到当前日期
 	 * 
 	 * @return
@@ -1662,49 +1676,70 @@ public class DateUtil {
 	
 	public static void main(String[] args) {
 		
-		{
-			HttpURLConnection connection = null;
-			try {
-				String line;
-
-					//String orderurl = "http://210.22.155.10:8089/mlh/login.do?comd=login&username=test测试1&password=testpass&nickname=test测试1&sex=1&sign=";
-					String orderurl = "http://210.22.155.10:8089/wns/record.do?";
-					connection = (HttpURLConnection) new URL(orderurl).openConnection();
-					connection.setDoOutput(true);
-					connection.setRequestMethod("POST"); 
-					
-					KeyValue kv = new KeyValue();
-					kv.setKeyValue1(0);
-					String kvstr = JacksonUtil.getJsonString4JavaPOJO(kv);
-					
-					String sourceStr = "4329jh4309823h" + "10001" + kvstr + "()gamekey1";
-					String sign = HashHex.HashToMD5Hex(sourceStr);
-					System.out.println(sourceStr);
-					System.out.println(sign);
-					
-					String data = "comd=saverecord&mtId=4329jh4309823h&gameId=10001&keyValue=" + kvstr + "&recordData=()&sign=" + sign;
-					OutputStream out = connection.getOutputStream();
-//					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter (out));
-//					writer.append(jsondata);
-					out.write(data.getBytes());
-					out.flush();
-					
-					InputStream in = connection.getInputStream();
-					StringBuilder sb = new StringBuilder();
-					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-					while ((line = reader.readLine()) != null)
-						sb.append(line);
-
-					in.close();
-					connection.disconnect();
-					String result = new String(sb);
-
-			} catch (Exception e) {
-//				logger.error(String.format("validator token error %s \n %s",
-//						new Object[] { e.getMessage(), e.getCause() }));
-			}
+//		{
+//			HttpURLConnection connection = null;
+//			try {
+//				String line;
+//
+//					//String orderurl = "http://210.22.155.10:8089/mlh/login.do?comd=login&username=test测试1&password=testpass&nickname=test测试1&sex=1&sign=";
+//					String orderurl = "http://210.22.155.10:8089/wns/record.do?";
+//					connection = (HttpURLConnection) new URL(orderurl).openConnection();
+//					connection.setDoOutput(true);
+//					connection.setRequestMethod("POST"); 
+//					
+//					KeyValue kv = new KeyValue();
+//					kv.setKeyValue1(0);
+//					String kvstr = JacksonUtil.getJsonString4JavaPOJO(kv);
+//					
+//					String sourceStr = "4329jh4309823h" + "10001" + kvstr + "()gamekey1";
+//					String sign = HashHex.HashToMD5Hex(sourceStr);
+//					System.out.println(sourceStr);
+//					System.out.println(sign);
+//					
+//					String data = "comd=saverecord&mtId=4329jh4309823h&gameId=10001&keyValue=" + kvstr + "&recordData=()&sign=" + sign;
+//					OutputStream out = connection.getOutputStream();
+////					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter (out));
+////					writer.append(jsondata);
+//					out.write(data.getBytes());
+//					out.flush();
+//					
+//					InputStream in = connection.getInputStream();
+//					StringBuilder sb = new StringBuilder();
+//					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+//
+//					while ((line = reader.readLine()) != null)
+//						sb.append(line);
+//
+//					in.close();
+//					connection.disconnect();
+//					String result = new String(sb);
+//
+//			} catch (Exception e) {
+////				logger.error(String.format("validator token error %s \n %s",
+////						new Object[] { e.getMessage(), e.getCause() }));
+//			}
+//		}
+		
+//		System.out.println(HashHex.HashToMD5Hex("smspushYangzhi1000213750066095yzkjkey"));
+//		System.out.println(HashHex.HashToMD5Hex("abcd4585111"));
+		
+		String coindata = "%7b%22mThirdcoin%22%3a0%2c%22mSecondcoin%22%3a24%2c%22mBasecoin%22%3a0%7d";
+		
+		JSONObject coinjson;
+		try {
+			coinjson = JSONObject.fromObject(URLDecoder.decode(coindata, "utf-8"));
+			String mBasecoin = String.valueOf(coinjson.get("mBasecoin"));
+			String mSecondcoin = String.valueOf(coinjson.get("mSecondcoin"));
+			String mThirdcoin = String.valueOf(coinjson.get("mThirdcoin"));
+			
+			System.out.println(mBasecoin);
+			System.out.println(mSecondcoin);
+			System.out.println(mThirdcoin);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 	}
 	
 	/**

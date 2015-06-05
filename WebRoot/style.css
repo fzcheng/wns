@@ -1,0 +1,113 @@
+@charset "utf-8";
+body {
+    margin: 0;
+    padding: 0;
+    background-repeat:no-repeat
+    width: 800px;
+    heigth: 640px;
+}
+
+html {
+    padding: 0;
+    margin: 0;
+}
+
+.main {
+	width: 800px;
+    heigth: 640px;
+    margin: 0;
+    padding: 0;
+    background: url(images/choujiangdi.png);
+    background-repeat:no-repeat
+}
+
+.resize {
+    width: 800px;
+    heigth: 640px;
+    padding: 0;
+    margin: 0 auto;
+}
+
+.header_resize {
+	width: 800px;
+    heigth: 480px;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    width: 800px;
+    heigth: 480px;
+    padding: 0;
+    margin: 0;
+}
+
+.header_blog2 {
+    background: url(images/header_blog_bg.gif) top center repeat-x;
+    padding: 0 0 0 0;
+    margin: 0;
+    height: 95px;
+}
+
+.header_blog2 h2 {
+    font: bold 36px Arial, Helvetica, sans-serif;
+    color: #fff;
+    padding: 10px 0 0 0;
+    margin: 0;
+}
+
+.img_one{
+	width:800px;
+	height:480px;
+	margin: 0;
+    padding: 0;
+	background:url(images/choujiangdi.png);
+	background-repeat:no-repeat
+}
+
+.tel{POSITION: absolute;LEFT:528px;TOP:278px;width:50px;height:20px;}
+
+.choujiangbtn{padding-left:557px;padding-top:160px;width:105px;height:105px;}
+
+.word{POSITION: absolute; LEFT:150px;TOP:10px;width:650px;height:20px;}
+
+.img1{ 
+	LEFT: 416px; 
+	POSITION: absolute; 
+	TOP: 39px;
+}
+.img2{ 
+	LEFT: 553px; 
+	POSITION: absolute; 
+	TOP: 39px;
+}
+.img3{ 
+	LEFT: 690px; 
+	POSITION: absolute; 
+	TOP: 39px;
+}
+.img4{ 
+	LEFT: 690px; 
+	POSITION: absolute; 
+	TOP: 171px;
+}
+.img5{ 
+	LEFT: 690px; 
+	POSITION: absolute; 
+	TOP: 305px;
+}
+.img6{ 
+	LEFT: 553px; 
+	POSITION: absolute; 
+	TOP: 305px;
+}
+.img7{ 
+	LEFT: 416px; 
+	POSITION: absolute; 
+	TOP: 305px;
+}
+.img8{ 
+	LEFT: 416px; 
+	POSITION: absolute; 
+	TOP: 171px;
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Suggest">
+
+	<typeAlias alias="suggest" type="cn.game.vo.record.SuggestVO" />
+	<parameterMap class="suggest" id="pm_payrecord_without_id">
+		<parameter property="mtId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="plat" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="suggest" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="time" javaType="string" jdbcType="DATETIME" />
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_payrecord_without_id">
+		<![CDATA[
+			INSERT INTO $tableName$ (mtId,plat,suggest,time) 
+			VALUES (?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+</sqlMap>

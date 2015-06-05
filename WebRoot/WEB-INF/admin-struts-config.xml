@@ -11,6 +11,23 @@
 			
 		</action>
 		
+		<action parameter="comd" path="/data" type="org.springframework.web.struts.DelegatingActionProxy">
+			
+		</action>
+		
+		<action parameter="comd" path="/top" type="org.springframework.web.struts.DelegatingActionProxy">
+			
+		</action>
+		
+		<action path="/d" scope="request" type="cn.game.action.FileDownloadAction" />
+		
+		<action path="/tuijian" scope="request" type="cn.game.action.TuijianAction" />
+		
+		
+		<action parameter="comd" path="/code" type="org.springframework.web.struts.DelegatingActionProxy">
+			
+		</action>
+		
 	</action-mappings>
 	<message-resources parameter="resources.config.index"></message-resources>
 </struts-config>

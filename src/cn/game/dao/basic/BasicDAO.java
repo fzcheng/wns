@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
+import cn.bill.migu.vo.basic.MiguCodeVO;
 import cn.game.vo.basic.BasicVO;
 import cn.game.vo.basic.GameVO;
 
@@ -50,6 +51,13 @@ public class BasicDAO<T extends BasicVO> extends SqlMapClientDaoSupport {
 		return map.get(id);
 	}
 
+	public T getByKey(String id) {
+		T t = (T)getSqlMapClientTemplate().queryForObject(
+				xmlname + ".getByKey", id);
+		
+		return t;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void loadList() {
 		List<T> list = getSqlMapClientTemplate().queryForList(
@@ -85,5 +93,10 @@ public class BasicDAO<T extends BasicVO> extends SqlMapClientDaoSupport {
 			}
 		}
 
+	}
+
+	public void update(T t) {
+		getSqlMapClientTemplate().update(
+				xmlname + ".update", t);
 	}
 }

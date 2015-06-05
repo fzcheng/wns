@@ -9,14 +9,6 @@ public class ClientMain implements IPushSms{
 	final static String USER = "38051884";
 	final static String PASS = "630368";
 	
-	public static ClientMain self;
-	
-	public static ClientMain getInstance() {
-		if(self == null)
-			self = new ClientMain();
-		return self;
-	}
-	
 	public int sendSms(String telnum, String content)
 	{
 		System.out.println(System.getProperty("http.nonProxyHosts"));

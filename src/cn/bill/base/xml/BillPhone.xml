@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BillPhone">
+
+	<typeAlias alias="billphone" type="cn.bill.base.vo.BillPhoneVO" />
+	<parameterMap class="billphone" id="pm_billphone_without_id">
+		<parameter property="phonenum" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="imsi" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="provinceid" javaType="int" jdbcType="INT" />
+		<parameter property="create_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="last_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="totalcount" javaType="int" jdbcType="INT" />
+		<parameter property="totalprice" javaType="int" jdbcType="INT" />
+		<parameter property="isblock" javaType="int" jdbcType="INT" />
+		<parameter property="monthcount" javaType="int" jdbcType="INT" />
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_billphone_without_id">
+		<![CDATA[
+			INSERT INTO bill_phone (phonenum,imsi,provinceid,create_time,last_time,totalcount,totalprice,isblock,monthcount) 
+			VALUES (?,?,?,?,?,?,?,?,?)
+		]]>
+	</insert>
+	
+	<select id="getByPhone" parameterClass="string" resultClass="billphone">
+		select *,"bill_phone" as tableName from  bill_phone where phonenum = #VARCHAR# limit 1 
+	</select>
+	
+	<select id="getByImsi" parameterClass="string" resultClass="billphone">
+		select *,"bill_phone" as tableName from  bill_phone where imsi = #VARCHAR# limit 1 
+	</select>
+</sqlMap>

@@ -1,0 +1,143 @@
+<html lang="zh" xml:lang="zh">
+    <head>
+     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+     <meta name="viewport" content="width=1280px,target-densitydpi=200,user-scalable=no" />
+     <link href="style.css" rel="stylesheet" type="text/css"/>
+	 <script type="text/javascript">
+	 		var curNum = 1;
+	 		var isrun = 0;
+	 		var time;
+           function checkdata()                                     //此处判断用命名 手机号时候为空，为空返回false 不为空返回信息
+                 {
+                   var tel=document.telnum.value;
+
+                      //if(tel=="321")
+                      {
+                      		//telnum.value = "432";
+                           alert("手机号不能为空！");
+                           return false;
+                       } 
+                       //else
+                       {
+                       //telnum.value = "321";
+                       }
+                      return tel;
+               } 
+               
+               function clickHandler(){
+  					alert("手机号不能为空！");
+  					
+  					return 1;
+				}  
+				
+				function setSize(w, h) {  
+    				//$("body").width(w / window.devicePixelRatio);  
+    				//$("body").height(h / window.devicePixelRatio);  
+				}
+				
+				function roullet()
+				{
+					var tel=document.getElementById("tel");
+					if(tel.value == "" || tel.value.length != 11)
+					{
+						//tel.value = "432";
+						alert("请输入正确的手机号码");
+						return "-1&请输入正确的手机号码!";
+					}
+					
+					if(isrun == 1)
+					{
+						isrun = 0;
+						window.clearInterval(time);
+						
+						var r = parseInt(Math.random() * 33 + 1);
+						var r2 = (r % 4) + 1;
+						curNum = r2 * 2;
+						var ss=document.getElementById("xuankuan");
+						ss.className="img"+curNum;
+					
+						if(r2 == 1)
+						{
+							return 1;
+						}
+						else if(r2 == 2 || r2 == 4)
+						{
+							return 3;
+						}
+						else if(r2 == 3)
+						{
+							return 2;
+						}
+						return 3;
+					}
+					else
+					{
+						isrun = 1;
+						time = window.setInterval("change(1)", 1);
+						
+						return "-1&抽奖开始!";
+					}
+				}
+				
+				function change(num){
+  
+				//for(id=1;id<=3;id++){
+					curNum += 1;
+					if(curNum > 8)
+					{
+						curNum = 1;
+					}
+					var ss=document.getElementById("xuankuan");
+					ss.className="img"+curNum;
+					/* if(id==num){
+				
+						ss.className="style1";
+						alert(ss.className);//alert值为style1，但就是加载不了样式，firefox下正常显示
+					 	if (num=="2") {
+							document.getElementById("mianfei").style.display="none";
+							document.getElementById("tiyan").style.display="block";
+							document.getElementById("shoufei").style.display="none";
+						}else if (num=="1") {
+							document.getElementById("mianfei").style.display="block";
+							document.getElementById("tiyan").style.display="none";
+							document.getElementById("shoufei").style.display="none";
+						}else if (num=="3") {
+							document.getElementById("mianfei").style.display="none";
+							document.getElementById("tiyan").style.display="none";
+							document.getElementById("shoufei").style.display="block";
+						}
+					}else
+					{
+						ss.className="style2";
+					 	//$('s'+id).className="style2";
+					} */
+				}
+          </script>
+      </head>
+
+	<body >
+      	<div class="img_one">
+			<div class="choujiangbtn">
+				<input type="Button" style="height:105px;width:105px;background:url(images/choujianganniu.png);border:0" 
+			    	value=""
+					onclick="var fhz=roullet();window.demo.clickOnAndroid(fhz)"">
+			</div>	
+			<div class="tel">
+				<input type="text" 
+				onmousedown="this.value=this.value.replace(/\D/g,'')"
+				onkeyup="this.value=this.value.replace(/\D/g,'')"  
+				onafterpaste="this.value=this.value.replace(/\D/g,'')"
+				style="height:32px;width:160px;" id="tel" name="telnum" value="输入手机号码">
+			</div>
+   	  	</div>
+   
+   		<div id="xuankuan" class="img1">
+   			<img style="FILTER: alpha(opacity=90, finishOpacity=0,style=2)" src="images/xuanzhongkuang.png" />
+   		</div>
+   		
+   		<div id="zhongjiangword" class="word">
+   			<font size="3" color="#ffffff"> 
+   			<marquee scrollamount="5" loop="3">  </marquee>
+   		</div>
+      </body>
+</html>

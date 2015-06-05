@@ -7,8 +7,11 @@
 <sqlMap namespace="Record">
 
 	<typeAlias alias="record" type="cn.game.vo.record.RecordVO" />
+	<typeAlias alias="top" type="cn.game.vo.record.TopVO" />
 	<parameterMap class="record" id="pm_record_without_id">
 		<parameter property="mtId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="plat" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="username" javaType="string" jdbcType="VARCHAR" />
 		<parameter property="keyValue1" javaType="int" jdbcType="INT" />
 		<parameter property="keyValue2" javaType="int" jdbcType="INT" />
 		<parameter property="keyValue3" javaType="int" jdbcType="INT" />
@@ -21,12 +24,16 @@
 		<parameter property="thirdCoin" javaType="int" jdbcType="INT" />
 		<parameter property="createTime" javaType="string" jdbcType="DATETIME" />
 		<parameter property="lastTime" javaType="string" jdbcType="DATETIME" />
+		<parameter property="syncTime" javaType="string" jdbcType="DATETIME" />
+		<parameter property="lon" javaType="double" jdbcType="DOUBLE" />
+		<parameter property="lat" javaType="double" jdbcType="DOUBLE" />
+		<parameter property="code" javaType="string" jdbcType="VARCHAR" />
 	</parameterMap>	
 	
 	<insert id="save" parameterMap="pm_record_without_id">
 		<![CDATA[
-			INSERT INTO $tableName$ (mtId,keyValue1,keyValue2,keyValue3,keyValue4,keyValue5,keyValue6,recordData,baseCoin,secondCoin,thirdCoin,createTime,lastTime) 
-			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+			INSERT INTO $tableName$ (mtId,plat,username,keyValue1,keyValue2,keyValue3,keyValue4,keyValue5,keyValue6,recordData,baseCoin,secondCoin,thirdCoin,createTime,lastTime,syncTime,lon,lat,code) 
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 		]]>
 	</insert>
 
@@ -76,11 +83,23 @@
 					lastTime = #lastTime:DATETIME#
 				]]>
 			</isNotNull>
+			
+			<isNotNull property="syncTime" prepend=",">
+				<![CDATA[
+					syncTime = #syncTime:DATETIME#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="username" prepend=",">
+				<![CDATA[
+					username = #username:VARCHAR#
+				]]>
+			</isNotNull>
 		</dynamic>
 		<dynamic prepend="WHERE">
 			<isNotNull property="mtId" prepend="">
 				<![CDATA[
-					mtId = #mtId:VARCHAR#
+					mtId = #mtId:VARCHAR# and plat = #plat:VARCHAR#
 				]]>
 			</isNotNull>
 		</dynamic>
@@ -102,11 +121,17 @@
 					lastTime = #lastTime:DATETIME#
 				]]>
 			</isNotNull>
+			
+			<isNotNull property="username" prepend=",">
+				<![CDATA[
+					username = #username:VARCHAR#
+				]]>
+			</isNotNull>
 		</dynamic>
 		<dynamic prepend="WHERE">
 			<isNotNull property="mtId" prepend="">
 				<![CDATA[
-					mtId = #mtId:VARCHAR#
+					mtId = #mtId:VARCHAR# and plat = #plat:VARCHAR#
 				]]>
 			</isNotNull>
 		</dynamic>
@@ -145,17 +170,67 @@
 					lastTime = #lastTime:DATETIME#
 				]]>
 			</isNotNull>
+			
+			<isNotNull property="username" prepend=",">
+				<![CDATA[
+					username = #username:VARCHAR#
+				]]>
+			</isNotNull>
 		</dynamic>
 		<dynamic prepend="WHERE">
 			<isNotNull property="mtId" prepend="">
 				<![CDATA[
-					mtId = #mtId:VARCHAR#
+					mtId = #mtId:VARCHAR# and plat = #plat:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+	</update>
+	
+	<update id="updateLocation" parameterClass="record">
+		<![CDATA[
+			UPDATE $tableName$
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="lon" prepend=",">
+				<![CDATA[
+					lon = #lon:DOUBLE#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="lat" prepend=",">
+				<![CDATA[
+					lat = #lat:DOUBLE#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="code" prepend=",">
+				<![CDATA[
+					code = #code:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<isNotNull property="mtId" prepend="">
+				<![CDATA[
+					mtId = #mtId:VARCHAR# and plat = #plat:VARCHAR#
 				]]>
 			</isNotNull>
 		</dynamic>
 	</update>
 	
 	<select id="getById" parameterClass="record" resultClass="record">
-		select *,"$tableName$" as tableName from  $tableName$ where mtId = #mtId:VARCHAR#
+		select *,"$tableName$" as tableName from  $tableName$ where mtId = #mtId:VARCHAR# and plat = #plat:VARCHAR#
+	</select>
+	
+	<select id="getTop" parameterClass="record" resultClass="top">
+		select b.mtId, b.plat, b.username, b.$para$ as keyValue from hz_friend_ship as a, $tableName$ as b where a.mtId=#mtId:VARCHAR# and a.plat=#plat:VARCHAR# and a.mtId = b.mtId and a.plat = b.plat order by $para$ desc
+	</select>
+	
+	<select id="getAllTop" parameterClass="record" resultClass="top">
+		select mtId, plat, username, $para$ as keyValue from $tableName$ where plat=#plat:VARCHAR# order by $para$ desc limit 100
+	</select>
+	
+	<select id="getMyTop" parameterClass="record" resultClass="int">
+		select count(*) from $tableName$ where plat=#plat:VARCHAR# and $para$
 	</select>
 </sqlMap>

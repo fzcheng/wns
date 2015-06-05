@@ -52,8 +52,24 @@ public class TestClient {
 		
 		TreeMap<String, Object> map = new TreeMap<String, Object>();
 		map.put("gameId", "10001");
-		map.put("comd", "getrecord");
-		map.put("mtId", "1458334284");
+		map.put("comd", "getalltop");
+		map.put("mtId", "8078503bbd454ed4dc2acfd5b855");
+		map.put("plat", "free");
+		map.put("keyIndex", "1");
+		
+//		map.put("gameId", "10001");
+//		map.put("comd", "getrecord");
+//		map.put("mtId", "8078503bbd454ed4dc2acfd5b855");
+//		map.put("plat", "free");
+		
+//		comd:getalltop
+//		comd : getalltop
+//		gameId : 10001
+//		keyIndex : 1
+//		mtId : 8078503bbd454ed4dc2acfd5b855
+//		plat : free
+//		sign : n4u7Xs0mfY/T15HCyTsewccHX61zbOdr/kAevjpolkzzQml54ONM2tGZAlBYimUfhcDm4YfzLHEA4jQXSaSHOsK6uU61eYIO6jrQgyHs7wPDUx8BMhjD9m4A2GKI8QuaJ9yXASiv6U3hR06WTEw4o65FeO1VXSPUR4qzW65aGek=
+
 		
 		String oinfo = StringUtil.getFromMap(map, "sign");
 		// 生成RSA签名
@@ -80,7 +96,9 @@ public class TestClient {
 
 		TestClient t = new TestClient();
 		String gameId = "10001";
-		String result = t.sendCommond(gameId, data, encryptkey);
+		//String url = "record.do?";
+		String url = "top.do?";
+		String result = t.sendCommond(gameId, data, encryptkey, url);
 		decodeResult(result);
 	}
 
@@ -97,6 +115,8 @@ public class TestClient {
 		//j.toString();
 		String doinfo = StringUtil.getFromMap(dmap, "sign");
 		String dsign = (String)dmap.get("sign");
+		//dmap.remove("sign");
+		//String doinfo = JsonUtil.getJsonStringFromMap(dmap);
 		boolean matched = EncryUtil.checkHandleRSA(doinfo, dsign, serverPublicKey);
 		
 		System.out.println("DmerchantAesKey:"+dmerchantAesKey);
@@ -105,12 +125,12 @@ public class TestClient {
 		System.out.println("matched:"+matched);
 	}
 
-	private String sendCommond(String gameId, String cdata, String encryptkey) {
+	private String sendCommond(String gameId, String cdata, String encryptkey, String url) {
 		HttpURLConnection connection = null;
 		try {
 			String line;
 
-				String orderurl = "http://127.0.0.1:8080/wns/record.do?";
+				String orderurl = "http://127.0.0.1:8080/wns/"+url;
 				//String data = "gameId="+gameId+"&data="+cdata+"&key="+encryptkey;
 				String data = "gameId="+gameId+"&data="+URLEncoder.encode(cdata, "utf-8")+"&key="+URLEncoder.encode(encryptkey,"utf-8");
 				//String data = "gameId="+gameId+"&key="+URLEncoder.encode(encryptkey,"utf-8");

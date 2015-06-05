@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class RecordVO extends BaseVO{
 
-	String mtId;    
+	String mtId;
+	String plat;
+	String username;
 	int keyValue1;
 	int keyValue2;
 	int keyValue3;
@@ -21,7 +23,11 @@ public class RecordVO extends BaseVO{
 	int thirdCoin;//第三货币 － 
 	String createTime;
 	String lastTime;
+	String syncTime;//上次同步好友的时间
 	CoinData coin;
+	double lon = 0;
+	double lat = 0;
+	String code = "0";
 	
 	public RecordVO(KeyValue kv) {
 		keyValue1 = kv.getKeyValue1();
@@ -104,7 +110,19 @@ public class RecordVO extends BaseVO{
 		return keyValue;
 	}
 	public void setKeyValue(KeyValue kv) {
-		this.keyValue = kv;
+		//this.keyValue = kv;
+		keyValue1 = Math.max(kv.getKeyValue1(), keyValue1);
+		keyValue2 = Math.max(kv.getKeyValue2(), keyValue2);
+		keyValue3 = Math.max(kv.getKeyValue3(), keyValue3);
+		keyValue4 = Math.max(kv.getKeyValue4(), keyValue4);
+		keyValue5 = Math.max(kv.getKeyValue5(), keyValue5);
+		keyValue6 = Math.max(kv.getKeyValue6(), keyValue6);
+		keyValue.setKeyValue1(keyValue1);
+		keyValue.setKeyValue2(keyValue2);
+		keyValue.setKeyValue3(keyValue3);
+		keyValue.setKeyValue4(keyValue4);
+		keyValue.setKeyValue5(keyValue5);
+		keyValue.setKeyValue6(keyValue6);
 	}
 	public String getRecordData() {
 		return recordData;
@@ -177,5 +195,84 @@ public class RecordVO extends BaseVO{
 
 	public void setCoin(CoinData coin) {
 		this.coin = coin;
+	}
+
+	public String getPlat() {
+		return plat;
+	}
+
+	public void setPlat(String plat) {
+		this.plat = plat;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public double getLon() {
+		return lon;
+	}
+
+	public void setLon(double lon) {
+		this.lon = lon;
+	}
+
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public void setKeyValue(int keyIndex, int v) {
+		switch(keyIndex)
+		{
+		case 1:
+			keyValue1 = Math.max(v, keyValue1);
+			keyValue.setKeyValue1(keyValue1);
+			break;
+		case 2:
+			keyValue2 = Math.max(v, keyValue2);
+			keyValue.setKeyValue2(keyValue2);
+			break;
+		case 3:
+			keyValue3 = Math.max(v, keyValue3);
+			keyValue.setKeyValue3(keyValue3);
+			break;
+		case 4:
+			keyValue4 = Math.max(v, keyValue4);
+			keyValue.setKeyValue4(keyValue4);
+			break;
+		case 5:
+			keyValue5 = Math.max(v, keyValue5);
+			keyValue.setKeyValue5(keyValue5);
+			break;
+		case 6:
+			keyValue6 = Math.max(v, keyValue6);
+			keyValue.setKeyValue6(keyValue6);
+			break;
+		}
+	}
+
+	@JsonIgnore
+	public String getSyncTime() {
+		return syncTime;
+	}
+
+	public void setSyncTime(String syncTime) {
+		this.syncTime = syncTime;
 	}
 }

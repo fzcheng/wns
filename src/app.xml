@@ -6,13 +6,13 @@ http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
  
  	<bean id="wnsDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://221.238.196.4:3306/wns?useUnicode=true&amp;characterEncoding=UTF-8" />
-		<property name="username" value="magicbird" />
-		<property name="password" value="bobo@magicbird" />
-		<property name="initialSize" value="20" />
-		<property name="maxIdle" value="30" />
-		<property name="minIdle" value="25" />
-		<property name="maxActive" value="80" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/wns?useUnicode=true&amp;characterEncoding=UTF-8" />
+		<property name="username" value="root" />
+		<property name="password" value="tong0901" />
+		<property name="initialSize" value="5" />
+		<property name="maxIdle" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxActive" value="5" />
 		<property name="maxWait" value="2000" />
 		<property name="testOnBorrow" value="true" />
 		<property name="validationQuery" value="select 1" />
@@ -27,8 +27,8 @@ http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 	<bean id="WnsSqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
 		<property name="configLocation" value="classpath:/wns_sql_map_config.xml" />
 		<property name="dataSource" ref="wnsDataSource" />
-	</bean>
-
+	</bean>	
+	
 	<bean name="SpringUtils" class="cn.org.util.SpringUtils" lazy-init="false" scope="singleton" />
 
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
@@ -62,4 +62,54 @@ http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 		</property>
 	</bean>
 	
+	<!-- migu igop -->
+	<bean id="miguDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/migu_igop?useUnicode=true&amp;characterEncoding=UTF-8" />
+		<property name="username" value="root" />
+		<property name="password" value="tong0901" />
+		<property name="initialSize" value="5" />
+		<property name="maxIdle" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxActive" value="5" />
+		<property name="maxWait" value="2000" />
+		<property name="testOnBorrow" value="true" />
+		<property name="validationQuery" value="select 1" />
+		<property name="testWhileIdle" value="true" />
+		<property name="timeBetweenEvictionRunsMillis" value="120000" />
+		<property name="minEvictableIdleTimeMillis" value="5000" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="180" />
+		<property name="logAbandoned" value="true" />
+	</bean>
+	
+	<bean id="MiguSqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="classpath:/migu_sql_map_config.xml" />
+		<property name="dataSource" ref="miguDataSource" />
+	</bean>
+	
+	<!-- Transaction manager for a single JDBC DataSource -->
+	<bean id="miguTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="miguDataSource" />
+	</bean>
+
+	<!-- 配置事物 -->
+	<bean id="miguManagerProxy" abstract="true"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="miguTransactionManager" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED</prop>
+				<prop key="getUserLoginVo">PROPAGATION_REQUIRED</prop>
+				<prop key="count*">PROPAGATION_REQUIRED</prop>
+				<prop key="query*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
 </beans>

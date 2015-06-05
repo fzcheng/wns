@@ -9,9 +9,21 @@
 		maxTransactions="5" useStatementNamespaces="true" />
 	<sqlMap resource="cn/game/xml/basic/Game.xml" />
 	<sqlMap resource="cn/game/xml/basic/PayCode.xml" />
+	<sqlMap resource="cn/game/xml/basic/Channel.xml" />
 	<sqlMap resource="cn/game/xml/basic/Hz_task.xml" />
 	
 	<sqlMap resource="cn/game/xml/record/Record.xml" />
 	<sqlMap resource="cn/game/xml/record/PayRecord.xml" />
+	<sqlMap resource="cn/game/xml/record/Suggest.xml" />
+	
+	<!--  
+	<sqlMap resource="cn/game/xml/sms/SmsGame.xml" />
+	<sqlMap resource="cn/game/xml/sms/SmsChannel.xml" />
+	<sqlMap resource="cn/game/xml/sms/SmsRecord.xml" />
+	
+	
 	<sqlMap resource="cn/game/xml/ts/TsCode.xml" />
+	<sqlMap resource="cn/game/xml/FileDCount.xml" />
+	-->
+	
 </sqlMapConfig>

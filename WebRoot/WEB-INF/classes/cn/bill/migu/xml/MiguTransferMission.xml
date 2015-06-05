@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MiguTransferMission">
+
+	<typeAlias alias="migutransfermission" type="cn.bill.migu.vo.MiguTransferMissionVO" />
+	<parameterMap class="migutransfermission" id="pm_migutransfermission_without_id">
+		<parameter property="modify_time" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="create_time" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="orderid" javaType="int" jdbcType="INT" />
+		<parameter property="music_id" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="msisdn" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="msg" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="rev_date" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="deal" javaType="int" jdbcType="INT" />
+	</parameterMap>	
+
+	<select id="getUnDeal" resultClass="migutransfermission">
+		select * from mmserver_migusmstransfermission where deal = 0 limit 20
+	</select>
+	
+	<update id="update" parameterClass="migutransfermission">
+		<![CDATA[
+			UPDATE mmserver_migusmstransfermission
+		]]>
+		<dynamic prepend="SET">
+			
+			<isNotNull property="deal" prepend=",">
+				<![CDATA[
+					deal = #deal:INT#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="modify_time" prepend=",">
+				<![CDATA[
+					modify_time = #modify_time:DATETIME#
+				]]>
+			</isNotNull>
+
+		</dynamic>
+		<dynamic prepend="WHERE">
+			id = #id:INT#
+		</dynamic>
+	</update>
+</sqlMap>

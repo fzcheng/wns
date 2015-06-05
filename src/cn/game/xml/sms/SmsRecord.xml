@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SmsRecord">
+
+	<typeAlias alias="smsrecord" type="cn.game.vo.sms.SmsRecordVO" />
+	<parameterMap class="smsrecord" id="pm_smsrecord_without_id">
+		<parameter property="telnum" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="gameId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="channelId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="content" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="sendflag" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="smschannel" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="sendtime" javaType="string" jdbcType="DATETIME" />
+	</parameterMap>	
+	
+	<typeAlias alias="message" type="cn.game.vo.sms.MessageVO" />
+
+	<insert id="save" parameterMap="pm_smsrecord_without_id">
+		<![CDATA[
+			INSERT INTO $tableName$ (telnum,gameId,channelId,content,sendflag,smschannel,sendtime) 
+			VALUES (?,?,?,?,?,?,?)
+		]]>
+	</insert>
+
+	<select id="getById" parameterClass="smsrecord" resultClass="smsrecord">
+		select *,"$tableName$" as tableName from  $tableName$ where id = #id:INT#
+	</select>
+	
+	<select id="getUnCompleteRecord" parameterClass="smsrecord" resultClass="message" >
+		select id as missionId,telnum as mobile, content from  $tableName$ where id>#id:INT# and sendflag!="0" order by id limit 10 
+	</select>
+	
+	<update id="completePush" parameterClass="smsrecord">
+		<![CDATA[
+			UPDATE $tableName$ set sendflag = "0", smschannel = #smschannel:VARCHAR# where id = #id:INT#
+		]]>
+	</update>
+</sqlMap>

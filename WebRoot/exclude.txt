@@ -1,0 +1,5 @@
+*pyc
+*~ 
+.git
+docs
+WEB-INF/classes/app.xml

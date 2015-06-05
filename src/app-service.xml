@@ -8,6 +8,11 @@
 		<property name="dataservice" ref="dataservice" />
 	</bean>
 	
+	<bean id="suggestservice"  class="cn.game.service.record.SuggestService">
+		<property name="suggestdao" ref="suggestdao" />
+		<property name="dataservice" ref="dataservice" />
+	</bean>
+	
 	<bean id="payrecordservice"  class="cn.game.service.record.PayRecordService">
 		<property name="payrecorddao" ref="payrecorddao" />
 		<property name="dataservice" ref="dataservice" />
@@ -18,4 +23,24 @@
 		lazy-init="false" scope="singleton" init-method="init">
 		<!-- <property name="initservice" ref="initservice" /> -->
 	</bean> 
+	
+	
+	<bean id="billdataservice" class="cn.bill.base.BillDataService"
+		lazy-init="false" scope="singleton" init-method="init">
+		<!-- <property name="initservice" ref="initservice" /> -->
+	</bean>
+	
+	<bean id="billphoneservice" class="cn.bill.base.service.BillPhoneService" >
+		<property name="billphonedao" ref="billphonedao" />
+	</bean>
+	
+	<bean id="miguservice"  class="cn.bill.migu.service.MiguService" init-method="init">
+		<property name="billphoneservice" ref="billphoneservice" />
+		<property name="billblockdao" ref="billblockdao" />
+		
+		<property name="migurecorddao" ref="migurecorddao" />
+		<property name="migutransfermissiondao" ref="migutransfermissiondao" />
+		
+		<property name="billdataservice" ref="billdataservice" />
+	</bean>
 </beans>

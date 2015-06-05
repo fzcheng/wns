@@ -288,8 +288,22 @@ public class SyncAppOrderReq implements Serializable {
 	//从ExData中获取uid
 	@JsonIgnore
 	public String getUid() {
-		//ExData.split("");
-		return ExData;
+		String s[] = ExData.split("\\|");
+		if(s != null && s.length >= 1)
+			return s[0];
+		else
+			return ExData;
+	}
+	//从ExData中获取uid
+	@JsonIgnore
+	public String getPlat() {
+		String s[] = ExData.split("\\|");
+		if(s != null && s.length > 1)
+			return s[1];
+		else
+		{
+			return "free";
+		}
 	}
 
 	@XmlElement(name = "MD5Sign", namespace = "http://www.monternet.com/dsmp/schemas/")

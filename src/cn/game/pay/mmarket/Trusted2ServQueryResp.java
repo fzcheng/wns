@@ -84,7 +84,21 @@ public class Trusted2ServQueryResp {
 	//从ExData中获取uid
 	@JsonIgnore
 	public String getUid() {
-		//ExData.split("");
-		return EXDATA;
+		String s[] = EXDATA.split("\\|");
+		if(s != null && s.length >= 1)
+			return s[0];
+		else
+			return EXDATA;
+	}
+	//从ExData中获取uid
+	@JsonIgnore
+	public String getPlat() {
+		String s[] = EXDATA.split("\\|");
+		if(s != null && s.length > 1)
+			return s[1];
+		else
+		{
+			return "free";
+		}
 	}
 }

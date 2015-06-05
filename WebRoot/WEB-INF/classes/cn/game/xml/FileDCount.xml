@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FileDCount">
+
+	<typeAlias alias="filedcount" type="cn.game.vo.FileDCountVO" />
+	<parameterMap class="filedcount" id="pm_filedcount_without_id">
+		<parameter property="id" javaType="int" jdbcType="INT" />
+		<parameter property="count" javaType="int" jdbcType="INT" />
+		<parameter property="filename" javaType="string" jdbcType="VARCHAR" />
+		
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_filedcount_without_id">
+		<![CDATA[
+			INSERT INTO file_dcount (id,count,filename) 
+			VALUES (?,?,?)
+		]]>
+	</insert>
+
+	<update id="update" parameterClass="filedcount">
+		<![CDATA[
+			UPDATE file_dcount
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="count" prepend=",">
+				<![CDATA[
+					count = #count:INT#
+				]]>
+			</isNotNull>
+			
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<isNotNull property="id" prepend="">
+				<![CDATA[
+					id = #id:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+	</update>
+	
+	<select id="getById" parameterClass="int" resultClass="filedcount">
+		select * from  file_dcount where id = #id:INT#
+	</select>
+</sqlMap>

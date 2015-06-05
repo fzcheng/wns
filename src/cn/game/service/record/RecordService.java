@@ -1,13 +1,17 @@
 package cn.game.service.record;
 
+import java.util.List;
+
 import net.sf.json.JSONObject;
 import cn.game.dao.record.RecordDAO;
 import cn.game.inter.service.IDataService;
 import cn.game.service.ReturnMessage;
+import cn.game.util.DateUtil;
 import cn.game.util.JacksonUtil;
 import cn.game.vo.basic.GameVO;
 import cn.game.vo.record.KeyValue;
 import cn.game.vo.record.RecordVO;
+import cn.game.vo.record.TopVO;
 import cn.org.util.StringUtil;
 
 /**
@@ -27,42 +31,47 @@ public class RecordService{
 		this.dataservice = dataservice;
 	}
 	
-	public ReturnMessage requestSaverecord(String mtId, String gameId,
+	public ReturnMessage requestSaverecord(String mtId, String plat, String username, String gameId,
 			String keyValue, String recordData, String sign) {
 		ReturnMessage rm = new ReturnMessage();
 		
 		GameVO game = dataservice.getGameById(gameId);
 		KeyValue kv = new KeyValue();
 		kv = JacksonUtil.fromJson(keyValue, kv.getClass());
-		RecordVO record;
-		if(kv == null)
-		{
-			record = new RecordVO();
-		}
-		else
-		{
-			record = new RecordVO(kv);
-		}
+		RecordVO record = new RecordVO();
 		
 		record.setMtId(mtId);
+		record.setPlat(plat);
+		record.setUsername(username);
 		record.setRecordData(recordData);
 		record.setTableName(game.getShortName() + "_record");
 		
 		RecordVO oldr = recorddao.getById(record);
 		if(oldr == null)
 		{
+			if(kv != null)
+			{
+				record.setKeyValue(kv);
+			}
+			
 			recorddao.save(record);
 		}
 		else
 		{
-			record.setCreateTime(oldr.getCreateTime());
+			oldr.setRecordData(recordData);
+			oldr.setUsername(username);
+			oldr.setLastTime(DateUtil.getCurrentTime());
 			if(kv == null)
 			{
-				recorddao.update2(record);
+				recorddao.update2(oldr);
 			}
 			else
 			{
-				recorddao.update(record);
+				if(kv != null)
+				{
+					oldr.setKeyValue(kv);
+				}
+				recorddao.update(oldr);
 			}
 		}
 		
@@ -70,13 +79,14 @@ public class RecordService{
 		return rm;
 	}
 
-	public ReturnMessage requestGetrecord(String mtId, String gameId, String sign) {
+	public ReturnMessage requestGetrecord(String mtId, String plat, String gameId, String sign) {
 		ReturnMessage rm = new ReturnMessage();
 		
 		GameVO game = dataservice.getGameById(gameId);
 		
 		RecordVO record = new RecordVO();
 		record.setMtId(mtId);
+		record.setPlat(plat);
 		record.setTableName(game.getShortName() + "_record");
 		
 		RecordVO rvo = recorddao.getById(record);
@@ -86,7 +96,7 @@ public class RecordService{
 		return rm;
 	}
 	
-	public RecordVO getrecord(String mtId, String gameId) {
+	public RecordVO getrecord(String mtId, String plat, String gameId) {
 		GameVO game = dataservice.getGameById(gameId);
 		if(game == null || game.getFlag() == 0)
 		{
@@ -95,13 +105,14 @@ public class RecordService{
 		
 		RecordVO record = new RecordVO();
 		record.setMtId(mtId);
+		record.setPlat(plat);
 		record.setTableName(game.getShortName() + "_record");
 		
 		RecordVO rvo = recorddao.getById(record);
 		return rvo;
 	}
 	
-	public ReturnMessage requestExchange(String mtId, String gameId,
+	public ReturnMessage requestExchange(String mtId, String plat, String gameId,
 			String keyValue, String recordData, String coindata, String sign) {
 		ReturnMessage rm = new ReturnMessage();
 		
@@ -109,12 +120,13 @@ public class RecordService{
 		
 		RecordVO record = new RecordVO();
 		record.setMtId(mtId);
+		record.setPlat(plat);
 		record.setTableName(game.getShortName() + "_record");
 		
 		JSONObject coinjson = JSONObject.fromObject(coindata);
-		String mBasecoin = (String)coinjson.get("mBasecoin");
-		String mSecondcoin = (String)coinjson.get("mSecondcoin");
-		String mThirdcoin = (String)coinjson.get("mThirdcoin");
+		String mBasecoin = String.valueOf(coinjson.get("mBasecoin"));
+		String mSecondcoin = String.valueOf(coinjson.get("mSecondcoin"));
+		String mThirdcoin = String.valueOf(coinjson.get("mThirdcoin"));
 		
 		RecordVO rvo = recorddao.getById(record);
 		int imBasecoin = StringUtil.parseInt(mBasecoin);
@@ -149,6 +161,7 @@ public class RecordService{
 		rvo.addSecondCoin(imSecondcoin);
 		rvo.addThirdCoin(imThirdcoin);
 		rvo.setRecordData(recordData);
+		rvo.setLastTime(DateUtil.getCurrentTime());
 		KeyValue kv = new KeyValue();
 		kv = JacksonUtil.fromJson(keyValue, kv.getClass());
 		if(kv != null)
@@ -161,11 +174,160 @@ public class RecordService{
 		return rm;
 	}
 	
+	public ReturnMessage upscore(String mtId, String plat, String gameId,
+			int keyIndex, int keyValue) {
+		ReturnMessage rm = new ReturnMessage();
+		
+		GameVO game = dataservice.getGameById(gameId);
+		RecordVO record = new RecordVO();
+
+		record.setMtId(mtId);
+		record.setPlat(plat);
+		record.setTableName(game.getShortName() + "_record");
+		
+		RecordVO oldr = recorddao.getById(record);
+		if(oldr == null)
+		{
+			rm.setDetail("无记录");
+			return rm;
+		}
+		else
+		{
+			oldr.setKeyValue(keyIndex, keyValue);
+
+			recorddao.update(oldr);
+		}
+		
+		rm.setResult(true);
+		return rm;
+	}
+	
+	public List<TopVO> getalltop(String mtId, String plat, String gameId,
+			int keyIndex) {
+		GameVO game = dataservice.getGameById(gameId);
+		RecordVO record = new RecordVO();
+		record.setMtId(mtId);
+		record.setPlat(plat);
+		record.setTableName(game.getShortName() + "_record");
+		
+		switch(keyIndex)
+		{
+		case 1:
+			record.setPara("keyValue1");
+			break;
+		case 2:
+			record.setPara("keyValue2");
+			break;
+		case 3:
+			record.setPara("keyValue3");
+			break;
+		case 4:
+			record.setPara("keyValue4");
+			break;
+		case 5:
+			record.setPara("keyValue5");
+			break;
+		case 6:
+			record.setPara("keyValue6");
+			break;
+		default:
+			record.setPara("keyValue1");
+			break;
+		}
+		List<TopVO> list = recorddao.getAllTop(record);
+		return list;
+	}
+	
+	public List<TopVO> getfriendtop(String mtId, String plat, String gameId,
+			int keyIndex, String jsonstr) {
+		GameVO game = dataservice.getGameById(gameId);
+		RecordVO record = new RecordVO();
+		record.setMtId(mtId);
+		record.setPlat(plat);
+		record.setTableName(game.getShortName() + "_record");
+		
+		//同步好友列表
+		if(DateUtil.isSameDay(record.getSyncTime())){
+			//JacksonUtil.fromJson(keyValue, kv.getClass());
+			record.setSyncTime(DateUtil.getCurrentTime());
+			recorddao.update(record);
+		}
+		
+		switch(keyIndex)
+		{
+		case 1:
+			record.setPara("keyValue1");
+			break;
+		case 2:
+			record.setPara("keyValue2");
+			break;
+		case 3:
+			record.setPara("keyValue3");
+			break;
+		case 4:
+			record.setPara("keyValue4");
+			break;
+		case 5:
+			record.setPara("keyValue5");
+			break;
+		case 6:
+			record.setPara("keyValue6");
+			break;
+		default:
+			record.setPara("keyValue1");
+			break;
+		}
+		List<TopVO> list = recorddao.getTop(record);
+		return list;
+	}
+	
 	public void update2(RecordVO record) {
 		recorddao.update2(record);
 	}
 	
 	public void updateCoin(RecordVO record) {
 		recorddao.updateCoin(record);
+	}
+
+	public int getMyTop(String mtId, String plat, String gameId, int keyIndex) {
+		RecordVO record = new RecordVO();
+		GameVO game = dataservice.getGameById(gameId);
+		if(game == null)
+			return -1;
+		record.setMtId(mtId);
+		record.setPlat(plat);
+		record.setTableName(game.getShortName() + "_record");
+		
+		RecordVO myRecord = recorddao.getById(record);
+		
+		if(myRecord == null)
+			return -1;
+		
+		switch(keyIndex)
+		{
+		case 1:
+			record.setPara("keyValue1 > " + myRecord.getKeyValue1());
+			break;
+		case 2:
+			record.setPara("keyValue2 > " + myRecord.getKeyValue2());
+			break;
+		case 3:
+			record.setPara("keyValue3 > " + myRecord.getKeyValue3());
+			break;
+		case 4:
+			record.setPara("keyValue4 > " + myRecord.getKeyValue4());
+			break;
+		case 5:
+			record.setPara("keyValue5 > " + myRecord.getKeyValue5());
+			break;
+		case 6:
+			record.setPara("keyValue6 > " + myRecord.getKeyValue6());
+			break;
+		default:
+			record.setPara("keyValue1 > " + myRecord.getKeyValue1());
+			break;
+		}
+		int curtop = recorddao.getMyTop(record);
+		return curtop;
 	}
 }

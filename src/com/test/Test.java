@@ -1,9 +1,17 @@
 package com.test;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.dom4j.DocumentException;
 
 import com.util.encrypt.AES;
 import com.util.encrypt.EncryUtil;
@@ -85,12 +93,129 @@ public class Test {
 //		System.out.println("Doinfo:"+doinfo);
 //		System.out.println("matched:"+matched);
 		
-		String o = "A+B";
-		String oo = URLEncoder.encode(o, "utf-8");
-		String ooo = URLDecoder.decode("lLfQAxUC3jzykgqL6Ekit5Z4B1ALpDEvIaa2cHIQzuaFuvGrEaO78Md7757O2H6ZvICAXxPipXfpfpPLyc%2BXFIJ%2FUPLBixp%2B6jkWfOmMx1owe%2FD7JJLKLw%2BxeUKSyycdeqQb0WILT2okuaqNncfoOlIt4i%2F3uZ2rG28vxBFheRpEYSCaJfTRdNAUTrrar4hAndcMxjYbMWxRT6AgKnN8nCpHqEAEgiF4SGqLqdBWrgJLaR0MGBM9g0qurk%2B8W1KwKd00NfSPu03KgKP15dA2Ss3zuDVEz5FlB1Gziv%2BMmAQV1Jh5i6gOyXkTo3%2BlFTyf7ATFC0uZ2Z%2FFBzRDPtXczDgCPkgKmtLZKiU7GgNoeqE%3D", "utf-8");
+//		String o = "A+B";
+//		String oo = URLEncoder.encode(o, "-8");
+//		String ooo = URLDecoder.decode("lLfQAxUC3jzykgqL6Ekit5Z4B1ALpDEvIaa2cHIQzuaFuvGrEaO78Md7757O2H6ZvICAXxPipXfpfpPLyc%2BXFIJ%2FUPLBixp%2B6jkWfOmMx1owe%2FD7JJLKLw%2BxeUKSyycdeqQb0WILT2okuaqNncfoOlIt4i%2F3uZ2rG28vxBFheRpEYSCaJfTRdNAUTrrar4hAndcMxjYbMWxRT6AgKnN8nCpHqEAEgiF4SGqLqdBWrgJLaR0MGBM9g0qurk%2B8W1KwKd00NfSPu03KgKP15dA2Ss3zuDVEz5FlB1Gziv%2BMmAQV1Jh5i6gOyXkTo3%2BlFTyf7ATFC0uZ2Z%2FFBzRDPtXczDgCPkgKmtLZKiU7GgNoeqE%3D", "utf-8");
+//		
+//		System.out.println(o);
+//		System.out.println(oo);
+//		System.out.println(ooo);
 		
-		System.out.println(o);
-		System.out.println(oo);
-		System.out.println(ooo);
+		String t = "usercode=13073369125&serviceid=150122084633&cporderid=20150123085245647358&operationtype=3&channelid=00023381&version=1.0&time=20150126055717";
+		String tt = CryptUtil.encryptBy3DesAndBase64(t, "2h1U2oW1dXnEarGHKrnWfNFk", "utf-8");
+		System.out.println(tt);
+		
+//		byte[] ttt = CryptUtil.encryptBy3Des(t.getBytes(), "2h1U2oW1dXnEarGHKrnWfNFk");
+//		String ggg = Base64.encode(ttt);
+//		System.out.println(ggg);
+		
+		System.out.println(CryptUtil.decryptBy3DesAndBase64(tt,
+				"2h1U2oW1dXnEarGHKrnWfNFk", "utf-8"));
+//		System.out.println(CryptUtil.decryptBy3DesAndBase64("0SPyfexP/QDCxU/JkB7LKaLlV9qqgs94IyNL+WJ0U6ImW7n7MtDWJk61yCI+9xKDiEpJI/VEWVUrqGLpd2bccFyGGecTBZATh/PQGZZhgBz+Qccp3L+aIIMAOEcqw95iUhJIWDi+iehuPIFmFel9apn1po7Kjp4lwX8hCvA5MrVZhrl2k71OWgf2W/lrPPIW",
+//				"Subs123", "utf-8"));
+//		
+//		String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><request><body><Payid>11795134702</Payid><Price>400</Price><PutChannelID>2094</PutChannelID><Version>1.0.0</Version><Appid>117951347</Appid><UA>h60</UA><imsi>460008333182755</imsi></body></request>";
+//		String ss = sendHttp(xml, "http://umpay.vspace.net.cn:9180/umpay/fmmcsspchanneloff");
+//		System.out.println("ss:" + ss);
+		
+		
+		String f = URLEncoder.encode("渠道运营日统计", "utf-8");
+		System.out.println("f:" + f);
+		//testUmpaychannel();
+		
+		System.out.println(URLDecoder.decode("mbs%40admin", "utf-8"));
+	}
+	
+	public static void testUmpaychannel() throws DocumentException {
+
+		StringBuffer sb = new StringBuffer();
+		//sb.append("<?xml version=\"1.0\" encoding=\"utf-8\"?><request><body><Payid>11795134702</Payid><Price>400</Price><PutChannelID>2094</PutChannelID><Version>1.0.0</Version><Appid>117951347</Appid><UA>h60</UA><imsi>460008333182755</imsi></body></request>");
+		sb.append("<?xml version=\"1.0\" encoding=\"utf-8\"?><request><body><Payid>11795134702</Payid><Price>400</Price><PutChannelID>2094</PutChannelID><Version>1.0.0</Version><Appid>117951347</Appid><UA>h60</UA><imsi>460008333182755</imsi></body></request>");
+		System.out.println("请求地址：" + "http://umpay.vspace.net.cn:9180/umpay/fmmcsspchanneloff ");
+		String xml = sb.toString();
+		System.out.println("请求XML信息：" + xml);
+		long startTime = System.currentTimeMillis();
+
+		String resultXml = sendHttp2(xml, "http://umpay.vspace.net.cn:9180/umpay/fmmcsspchanneloff ");
+		System.out.println("返回的信息resultXml:" + resultXml);
+		long endtime = System.currentTimeMillis();
+		System.out.println("startTime:" + startTime + "  endtime：" + endtime + "  一起执行时间:" + (endtime - startTime));
+
+	}
+	
+	public static String sendHttp2(String xml, String httpurl) {
+		URL url;
+		StringBuffer returnxml = new StringBuffer();
+
+		try {
+			url = new URL(httpurl);
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			conn.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
+			//conn.setRequestProperty("remote-host-c", "211.138.100.178");
+			conn.setRequestProperty("remote-host-c", "116.237.57.138");
+			//String timeout = XmlTool.getInstance().getValue("timeout");
+			String timeout = "3000";
+			conn.setConnectTimeout(Integer.parseInt(timeout));
+			conn.setReadTimeout(Integer.parseInt(timeout));
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+			conn.setUseCaches(false);
+			conn.getOutputStream().write(xml.getBytes("UTF-8"));
+			conn.getOutputStream().flush();
+			conn.getOutputStream().close();
+			InputStream in = conn.getInputStream();
+			InputStreamReader ireader = new InputStreamReader(in, "UTF-8");
+			java.io.BufferedReader reader = new java.io.BufferedReader(ireader);
+			String s = "";
+			while ((s = reader.readLine()) != null) {
+				returnxml.append(s + "\n");
+			}
+			reader.close();
+		} catch (MalformedURLException e) {
+			return "";
+		} catch (IOException e) {
+			return "";
+		}
+		return returnxml.toString().trim();
+	}
+	
+	public static String sendHttp(String xml, String httpurl) {
+		URL url;
+		StringBuffer returnxml = new StringBuffer();
+
+		try {
+			url = new URL(httpurl);
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setConnectTimeout(0);
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			conn.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
+                //如果是服务器请求必须添加remote-host-c，如果用手机请求不需要添加这个参数
+			//conn.setRequestProperty("remote-host-c", "218.80.198.203");
+			conn.setRequestProperty("remote-host-c", "116.237.57.138");
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+			conn.setUseCaches(false);
+			conn.getOutputStream().write(xml.getBytes("UTF-8"));
+			conn.getOutputStream().flush();
+			conn.getOutputStream().close();
+			InputStream in = conn.getInputStream();
+			InputStreamReader ireader = new InputStreamReader(in, "UTF-8");
+			java.io.BufferedReader reader = new java.io.BufferedReader(ireader);
+			String s = "";
+			while ((s = reader.readLine()) != null) {
+				returnxml.append(s + "\n");
+			}
+			reader.close();
+		} catch (MalformedURLException e) {
+			return "";
+		} catch (IOException e) {
+			return "";
+		}
+		return returnxml.toString();
 	}
 }

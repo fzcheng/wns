@@ -52,6 +52,7 @@ public class EcClient implements IPushSms{
 		} catch (Exception e) {
 //			logger.error(String.format("validator token error %s \n %s",
 //					new Object[] { e.getMessage(), e.getCause() }));
+			e.printStackTrace();
 		}
 		
 		return -1;
@@ -65,5 +66,6 @@ public class EcClient implements IPushSms{
 		//System.setProperty("http.nonProxyHosts", "169.254/16");
 		// 发送传真接口
 		int result = client.sendSms("13818365949", "测试内容");
+		System.out.println(result);
 	}
 }
