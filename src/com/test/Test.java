@@ -19,6 +19,7 @@ import com.util.encrypt.RSA;
 
 import cn.game.util.JsonUtil;
 import cn.game.util.RandomUtil;
+import cn.org.util.HashHex;
 import cn.org.util.StringUtil;
 
 
@@ -101,29 +102,40 @@ public class Test {
 //		System.out.println(oo);
 //		System.out.println(ooo);
 		
-		String t = "usercode=13073369125&serviceid=150122084633&cporderid=20150123085245647358&operationtype=3&channelid=00023381&version=1.0&time=20150126055717";
-		String tt = CryptUtil.encryptBy3DesAndBase64(t, "2h1U2oW1dXnEarGHKrnWfNFk", "utf-8");
-		System.out.println(tt);
-		
-//		byte[] ttt = CryptUtil.encryptBy3Des(t.getBytes(), "2h1U2oW1dXnEarGHKrnWfNFk");
-//		String ggg = Base64.encode(ttt);
-//		System.out.println(ggg);
-		
-		System.out.println(CryptUtil.decryptBy3DesAndBase64(tt,
-				"2h1U2oW1dXnEarGHKrnWfNFk", "utf-8"));
-//		System.out.println(CryptUtil.decryptBy3DesAndBase64("0SPyfexP/QDCxU/JkB7LKaLlV9qqgs94IyNL+WJ0U6ImW7n7MtDWJk61yCI+9xKDiEpJI/VEWVUrqGLpd2bccFyGGecTBZATh/PQGZZhgBz+Qccp3L+aIIMAOEcqw95iUhJIWDi+iehuPIFmFel9apn1po7Kjp4lwX8hCvA5MrVZhrl2k71OWgf2W/lrPPIW",
-//				"Subs123", "utf-8"));
+//		String t = "usercode=13073369125&serviceid=150122084633&cporderid=20150123085245647358&operationtype=3&channelid=00023381&version=1.0&time=20150126055717";
+//		String tt = CryptUtil.encryptBy3DesAndBase64(t, "2h1U2oW1dXnEarGHKrnWfNFk", "utf-8");
+//		System.out.println(tt);
 //		
-//		String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><request><body><Payid>11795134702</Payid><Price>400</Price><PutChannelID>2094</PutChannelID><Version>1.0.0</Version><Appid>117951347</Appid><UA>h60</UA><imsi>460008333182755</imsi></body></request>";
-//		String ss = sendHttp(xml, "http://umpay.vspace.net.cn:9180/umpay/fmmcsspchanneloff");
-//		System.out.println("ss:" + ss);
+////		byte[] ttt = CryptUtil.encryptBy3Des(t.getBytes(), "2h1U2oW1dXnEarGHKrnWfNFk");
+////		String ggg = Base64.encode(ttt);
+////		System.out.println(ggg);
+//		
+//		System.out.println(CryptUtil.decryptBy3DesAndBase64(tt,
+//				"2h1U2oW1dXnEarGHKrnWfNFk", "utf-8"));
+////		System.out.println(CryptUtil.decryptBy3DesAndBase64("0SPyfexP/QDCxU/JkB7LKaLlV9qqgs94IyNL+WJ0U6ImW7n7MtDWJk61yCI+9xKDiEpJI/VEWVUrqGLpd2bccFyGGecTBZATh/PQGZZhgBz+Qccp3L+aIIMAOEcqw95iUhJIWDi+iehuPIFmFel9apn1po7Kjp4lwX8hCvA5MrVZhrl2k71OWgf2W/lrPPIW",
+////				"Subs123", "utf-8"));
+////		
+////		String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><request><body><Payid>11795134702</Payid><Price>400</Price><PutChannelID>2094</PutChannelID><Version>1.0.0</Version><Appid>117951347</Appid><UA>h60</UA><imsi>460008333182755</imsi></body></request>";
+////		String ss = sendHttp(xml, "http://umpay.vspace.net.cn:9180/umpay/fmmcsspchanneloff");
+////		System.out.println("ss:" + ss);
+//		
+//		
+//		String f = URLEncoder.encode("渠道运营日统计", "utf-8");
+//		System.out.println("f:" + f);
+//		//testUmpaychannel();
+//		
+//		System.out.println(URLDecoder.decode("mbs%40admin", "utf-8"));
 		
+		System.out.println(URLDecoder.decode("%E6%88%90%E5%8A%9F", "utf-8"));
 		
-		String f = URLEncoder.encode("渠道运营日统计", "utf-8");
-		System.out.println("f:" + f);
-		//testUmpaychannel();
+		//String signData = "app_id=246917aeab8411e4b345c6a10b512583&app_orderid=20150630104137391617&ch_type=37&is_monthly=0&merc_id=2000029&merc_key=5598531e2dbc664be50d88fc56e4a840&orderid=20150630104137391617&pay_amount=200&pay_time=20150630104202&phone=13818365949&rec_amount=200&status=1&time=1435632122&userid=14679060";
 		
-		System.out.println(URLDecoder.decode("mbs%40admin", "utf-8"));
+		String signData = "app_id=101&channelid=1000&comd=getmsg&extra=2015081000000203&fee_code=101001&orderid=2015081000000203&url=http://114.113.159.171:8088/statsynd/interface/zhangmu/ctcc.jsp&key=d4df4f41b8924964b8785ea35e117d6d";
+		String sign = "3263845f0db5fdf926eb2d0da9406566";
+		String MAC = HashHex.HashToMD5Hex(signData);
+		
+		System.out.println("signData:"+signData);
+		System.out.println("MAC:"+MAC);
 	}
 	
 	public static void testUmpaychannel() throws DocumentException {

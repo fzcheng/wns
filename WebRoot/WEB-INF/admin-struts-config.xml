@@ -24,8 +24,13 @@
 		<action path="/tuijian" scope="request" type="cn.game.action.TuijianAction" />
 		
 		
-		<action parameter="comd" path="/code" type="org.springframework.web.struts.DelegatingActionProxy">
-			
+		<action parameter="comd" path="/code" type="org.springframework.web.struts.DelegatingActionProxy">	
+		</action>
+		
+		<action parameter="comd" path="/birdpay" type="org.springframework.web.struts.DelegatingActionProxy">	
+		</action>
+		
+		<action parameter="comd" path="/mbpay" type="org.springframework.web.struts.DelegatingActionProxy">	
 		</action>
 		
 	</action-mappings>

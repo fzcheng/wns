@@ -166,6 +166,46 @@
 		<url-pattern>/mmarketquery.do</url-pattern>
 	</servlet-mapping>
 	
+	<!-- bestpaycb v_api begin -->
+	<!-- bestpaycb -->
+	<servlet>
+		<servlet-name>bestpaycb_api</servlet-name>
+		<servlet-class>
+			cn.bill.bestpay.v_api.action.bestpaycb</servlet-class>
+	</servlet>
+	  
+	<servlet-mapping>
+		<servlet-name>bestpaycb_api</servlet-name>
+		<url-pattern>/bestpaycb_api.do</url-pattern>
+	</servlet-mapping>
+	<!-- bestpaycb v_api end -->
+	
+	<!-- bestpaycb v_sdk begin -->
+	<!-- bestpaycb -->
+	<servlet>
+		<servlet-name>bestpaycb</servlet-name>
+		<servlet-class>
+			cn.bill.bestpay.v_sdk.action.bestpaycb</servlet-class>
+	</servlet>
+	  
+	<servlet-mapping>
+		<servlet-name>bestpaycb</servlet-name>
+		<url-pattern>/bestpaycb.do</url-pattern>
+	</servlet-mapping>
+	
+	<!-- bestverify -->
+	<servlet>
+		<servlet-name>bestverify</servlet-name>
+		<servlet-class>
+			cn.bill.bestpay.v_sdk.action.bestverify</servlet-class>
+	</servlet>
+	  
+	<servlet-mapping>
+		<servlet-name>bestverify</servlet-name>
+		<url-pattern>/bestverify.do</url-pattern>
+	</servlet-mapping>
+	<!-- bestpaycb v_sdk end -->
+	
   	<!-- 字符过滤类 编码方式为UTF-8 -->
 	<filter>
 		<filter-name>EncodingFilter</filter-name>

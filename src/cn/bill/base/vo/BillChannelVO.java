@@ -14,9 +14,9 @@ import cn.game.vo.basic.BasicVO;
  */
 public class BillChannelVO extends BasicVO{
 
-	int channelid;
-	String channelname = "";
-	String key = "";
+	int channel_id;
+	String channel_name = "";
+	String channelkey = "";
 	int status;//1-启用  2-关闭  0-配置中
 	String codeids = "";
 	String remark = "";
@@ -32,27 +32,27 @@ public class BillChannelVO extends BasicVO{
 
 	@Override
 	public String getKey() {
-		return "" + channelid;
+		return "" + channel_id;
 	}
 
 
-	public int getChannelid() {
-		return channelid;
+	public int getChannel_id() {
+		return channel_id;
 	}
 
 
-	public void setChannelid(int channelid) {
-		this.channelid = channelid;
+	public void setChannel_id(int channelid) {
+		this.channel_id = channelid;
 	}
 
 
-	public String getChannelname() {
-		return channelname;
+	public String getChannel_name() {
+		return channel_name;
 	}
 
 
-	public void setChannelname(String channelname) {
-		this.channelname = channelname;
+	public void setChannel_name(String channelname) {
+		this.channel_name = channelname;
 	}
 
 
@@ -86,8 +86,8 @@ public class BillChannelVO extends BasicVO{
 	}
 
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setChannelkey(String channelkey) {
+		this.channelkey = channelkey;
 	}
 
 
@@ -117,5 +117,10 @@ public class BillChannelVO extends BasicVO{
 
 	public void setP(int p) {
 		this.p = p;
+	}
+
+
+	public String getChannelkey() {
+		return channelkey;
 	}
 }

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BestpayRecord">
+
+	<typeAlias alias="bestpayrecord" type="cn.bill.bestpay.v_api.vo.BestpayRecordVO" />
+	<parameterMap class="bestpayrecord" id="pm_bestpayrecord_without_id">
+		<parameter property="modify_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="create_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="cp_channel_id" javaType="int" jdbcType="INT" />
+		<parameter property="orderid" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="phone" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="price" javaType="int" jdbcType="INT" />
+		<parameter property="tid" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="SMSID" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="TRANDATE" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="uid" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="bu" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="extra" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="status" javaType="int" jdbcType="INT" />
+		<parameter property="strategy" javaType="int" jdbcType="INT" />
+		<parameter property="transfer_status" javaType="int" jdbcType="INT" />
+		<parameter property="transfer_count" javaType="int" jdbcType="INT" />
+		<parameter property="ip" javaType="int" jdbcType="INT" />
+		<parameter property="transfer_url" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="code_channelid" javaType="int" jdbcType="INT" />
+		<parameter property="channel_order_id" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="app_id" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="fee_code" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="dev_name" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="resultcode" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="province" javaType="int" jdbcType="INT" />
+		<parameter property="location" javaType="int" jdbcType="INT" />
+		<parameter property="msg" javaType="string" jdbcType="VARCHAR" />
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_bestpayrecord_without_id">
+		<![CDATA[
+			INSERT INTO bestpay_record (modify_time,create_time,cp_channel_id,orderid,phone,price,tid,SMSID,TRANDATE,uid,bu,extra,status,strategy,transfer_status,transfer_count,ip
+			,transfer_url,code_channelid,channel_order_id,app_id,fee_code,dev_name,resultcode,province,location,msg) 
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<select id="getByOrderid" parameterClass="string" resultClass="bestpayrecord">
+		select * from  bestpay_record where orderid = #VARCHAR# order by id desc limit 1
+	</select>
+	
+	<select id="getByTid" parameterClass="string" resultClass="bestpayrecord">
+		select * from  bestpay_record where tid = #VARCHAR# order by id desc limit 1
+	</select>
+	
+	<select id="getBySMSID" parameterClass="string" resultClass="bestpayrecord">
+		select * from  bestpay_record where SMSID = #VARCHAR#
+	</select>
+	
+	<select id="getById" parameterClass="bestpayrecord" resultClass="bestpayrecord">
+		select * from  bestpay_record where id = #id:INT#
+	</select>
+	
+	<select id="getByChannelOrderid" parameterClass="string" resultClass="bestpayrecord">
+		select * from  bestpay_record where channel_order_id = #VARCHAR# order by id desc limit 1
+	</select>
+	
+	<update id="update" parameterClass="bestpayrecord">
+		<![CDATA[
+			UPDATE bestpay_record
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="transfer_status" prepend=",">
+				<![CDATA[
+					transfer_status = #transfer_status:INT#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="phone" prepend=",">
+				<![CDATA[
+					phone = #phone:VARCHAR#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="status" prepend=",">
+				<![CDATA[
+					status = #status:INT#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="modify_time" prepend=",">
+				<![CDATA[
+					modify_time = #modify_time:DATETIME#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="transfer_url" prepend=",">
+				<![CDATA[
+					transfer_url = #transfer_url:VARCHAR#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="strategy" prepend=",">
+				<![CDATA[
+					strategy = #strategy:INT#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="channel_order_id" prepend=",">
+				<![CDATA[
+					channel_order_id = #channel_order_id:VARCHAR#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="transfer_count" prepend=",">
+				<![CDATA[
+					transfer_count = #transfer_count:INT#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="resultcode" prepend=",">
+				<![CDATA[
+					resultcode = #resultcode:VARCHAR#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="msg" prepend=",">
+				<![CDATA[
+					msg = #msg:VARCHAR#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="SMSID" prepend=",">
+				<![CDATA[
+					SMSID = #SMSID:VARCHAR#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="TRANDATE" prepend=",">
+				<![CDATA[
+					TRANDATE = #TRANDATE:VARCHAR#
+				]]>
+			</isNotNull>
+			
+		</dynamic>
+		<dynamic prepend="WHERE">
+			id = #id:INT#
+		</dynamic>
+	</update>
+</sqlMap>

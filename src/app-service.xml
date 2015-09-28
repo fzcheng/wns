@@ -34,6 +34,7 @@
 		<property name="billphonedao" ref="billphonedao" />
 	</bean>
 	
+	<!-- migu -->
 	<bean id="miguservice"  class="cn.bill.migu.service.MiguService" init-method="init">
 		<property name="billphoneservice" ref="billphoneservice" />
 		<property name="billblockdao" ref="billblockdao" />
@@ -43,4 +44,42 @@
 		
 		<property name="billdataservice" ref="billdataservice" />
 	</bean>
+	
+	<!-- bestpay api -->
+	<bean id="bestpayrecordservice"  class="cn.bill.bestpay.v_api.service.BestpayRecordService">
+		<property name="bestpayrecorddao" ref="bestpayrecorddao" />
+	</bean>
+	
+	<bean id="bestpay_api_service"  class="cn.bill.bestpay.v_api.service.BestpayService" init-method="init" scope="singleton">
+		<property name="bestpayrecordservice" ref="bestpayrecordservice" />
+		<property name="billblockdao" ref="billblockdao" />
+	</bean>
+	
+	<bean id="bestpay_sdk_service"  class="cn.bill.bestpay.v_sdk.service.BestpayService" init-method="init" scope="singleton">
+		<property name="bestpayrecordservice" ref="bestpayrecordservice" />
+		<property name="billblockdao" ref="billblockdao" />
+	</bean>
+	
+	<!-- Mbpaysdk -->
+	<bean id="mbpaysdkservice"  class="cn.mbpaysdk.service.MbpaySdkService" init-method="init" scope="singleton">
+		<property name="phoneservice" ref="phoneservice" />
+		<property name="payrecordservice" ref="mbpaysdkpayrecordservice" />
+		<property name="dataservice" ref="mbpaysdkdataservice" />
+	</bean>
+	
+	<bean id="phoneservice"  class="cn.mbpaysdk.service.PhoneService">
+		<property name="dataservice" ref="mbpaysdkdataservice" />
+		<property name="phonedao" ref="mbpaysdkphonedao" />
+	</bean>
+
+	<bean id="mbpaysdkpayrecordservice"  class="cn.mbpaysdk.service.PayrecordService">
+		<property name="dataservice" ref="mbpaysdkdataservice" />
+		<property name="payrecorddao" ref="mbpaysdkpayrecorddao" />
+	</bean>
+
+
+	<bean id="mbpaysdkdataservice" class="cn.mbpaysdk.service.DataService"
+		lazy-init="false" scope="singleton" init-method="init">
+
+	</bean> 
 </beans>

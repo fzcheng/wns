@@ -9,41 +9,49 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import cn.bill.base.BaseBillAction;
-import cn.bill.base.response.BillErrorResponse;
-import cn.bill.migu.response.GetMiguCodeResponse;
-import cn.bill.migu.service.MiguService;
-import cn.bill.migu.vo.MiguRecordVO;
+import cn.bill.base.ErrorCode;
+import cn.bill.bestpay.v_api.response.BestpayErrorResponse;
+import cn.bill.bestpay.v_api.response.GetVerifyCodeResponse;
+import cn.bill.bestpay.v_api.response.SendVerifyCodeResponse;
+import cn.bill.bestpay.v_api.vo.BestpayRecordVO;
+import cn.bill.bestpay.v_sdk.response.GetMsgResponse;
+import cn.bill.bestpay.v_sdk.vo.GetCodeResultVO;
 import cn.game.service.ReturnMessage;
 
 public class BestpayAction extends BaseBillAction {
 
 	private final static Logger logger = Logger.getLogger(BestpayAction.class);
 
-	private MiguService miguservice;
+	private cn.bill.bestpay.v_api.service.BestpayService bestpay_api_service;
+	private cn.bill.bestpay.v_sdk.service.BestpayService bestpay_sdk_service;
 	
-	public void setMiguservice(MiguService miguservice) {
-		this.miguservice = miguservice;
+	public void setBestpay_api_service( cn.bill.bestpay.v_api.service.BestpayService bestpay_api_service) {
+		this.bestpay_api_service = bestpay_api_service;
+	}
+	
+	public void setBestpay_sdk_service( cn.bill.bestpay.v_sdk.service.BestpayService bestpay_sdk_service) {
+		this.bestpay_sdk_service = bestpay_sdk_service;
 	}
 	
 	/**
-	 * 根据用户手机号 或者 imsi获取可用的 migu代码
+	 * 根据用户手机号获取验证码 -- api版本
 	 */
 	public ActionForward getcode(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
-		GetMiguCodeResponse rsp = new GetMiguCodeResponse(request,response);
+		GetVerifyCodeResponse rsp = new GetVerifyCodeResponse(request,response);
 		
 		try {
-			ReturnMessage rm = miguservice.requestGetCode(request);
+			ReturnMessage rm = bestpay_api_service.requestGetVerifyCode(request);
 			
 			if(!rm.isResult())
 			{
-				BillErrorResponse errrsp = new BillErrorResponse(request,response, rm.getErrorCode(), rm.getDetail());
+				BestpayErrorResponse errrsp = new BestpayErrorResponse(request,response, (ErrorCode)rm.getObject(), rm.getDetail());
 				
 				errrsp.write();
 			}
 			else
 			{
-				rsp.setRecord((MiguRecordVO)rm.getObject());
+				rsp.setRecord((BestpayRecordVO)rm.getObject());
 				rsp.write();
 			}
 			
@@ -51,7 +59,7 @@ public class BestpayAction extends BaseBillAction {
 		} catch (Exception e) {// 如果上述操作处理出错返回错误消息
 			e.printStackTrace();
 			logger.error(e.getMessage());
-			BillErrorResponse errrsp = new BillErrorResponse(request,response, -1, "处理异常");
+			BestpayErrorResponse errrsp = new BestpayErrorResponse(request,response, ErrorCode.Error_Exception, "处理异常");
 			
 			errrsp.write();
 		}
@@ -60,24 +68,55 @@ public class BestpayAction extends BaseBillAction {
 	}
 	
 	/**
-	 * 通知完成订单
+	 * 发送验证码 -- api版本
 	 */
-	public ActionForward complete(ActionMapping mapping, ActionForm form,
+	public ActionForward sendcode(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
-		GetMiguCodeResponse rsp = new GetMiguCodeResponse(request,response);
+		SendVerifyCodeResponse rsp = new SendVerifyCodeResponse(request,response);
 		
 		try {
-			ReturnMessage rm = miguservice.requestGetCode(request);
+			ReturnMessage rm = bestpay_api_service.requestSendVerifyCode(request);
 			
 			if(!rm.isResult())
 			{
-				BillErrorResponse errrsp = new BillErrorResponse(request,response, rm.getErrorCode(), rm.getDetail());
+				BestpayErrorResponse errrsp = new BestpayErrorResponse(request,response, (ErrorCode)rm.getObject(), rm.getDetail());
 				
 				errrsp.write();
 			}
 			else
 			{
-				rsp.setRecord((MiguRecordVO)rm.getObject());
+				rsp.write();
+			}
+		} catch (Exception e) {// 如果上述操作处理出错返回错误消息
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			BestpayErrorResponse errrsp = new BestpayErrorResponse(request,response, ErrorCode.Error_Exception, "处理异常");
+			
+			errrsp.write();
+		}
+				
+		return null;
+	}
+	
+	/**
+	 * 根据用户手机号获取验证码 -- sdk版本
+	 */
+	public ActionForward getmsg(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) {
+		GetMsgResponse rsp = new GetMsgResponse(request,response);
+		
+		try {
+			ReturnMessage rm = bestpay_sdk_service.requestGetMsg(request);
+			
+			if(!rm.isResult())
+			{
+				BestpayErrorResponse errrsp = new BestpayErrorResponse(request,response, (ErrorCode)rm.getObject(), rm.getDetail());
+				
+				errrsp.write();
+			}
+			else
+			{
+				rsp.setRecord((GetCodeResultVO)rm.getObject());
 				rsp.write();
 			}
 			
@@ -85,7 +124,7 @@ public class BestpayAction extends BaseBillAction {
 		} catch (Exception e) {// 如果上述操作处理出错返回错误消息
 			e.printStackTrace();
 			logger.error(e.getMessage());
-			BillErrorResponse errrsp = new BillErrorResponse(request,response, -1, "处理异常");
+			BestpayErrorResponse errrsp = new BestpayErrorResponse(request,response, ErrorCode.Error_Exception, "处理异常");
 			
 			errrsp.write();
 		}

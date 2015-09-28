@@ -6,6 +6,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import cn.bill.base.vo.BillChannelVO;
+import cn.bill.base.vo.BillGoodsVO;
 import cn.bill.base.vo.BillHaoduanVO;
 import cn.bill.base.vo.BillLocationVO;
 import cn.bill.base.vo.BillProvinceVO;
@@ -26,6 +27,7 @@ public class BillDataService {
 	BasicDAO<BillProvinceVO> billprovincedao;
 	BasicDAO<BillHaoduanVO> billhaoduandao;
 	BasicDAO<BillLocationVO> billlocationdao;
+	BasicDAO<BillGoodsVO> billgoodsdao;
 	
 	SqlMapClient MiguSqlMapClient;
 	public void init()
@@ -37,6 +39,7 @@ public class BillDataService {
 		billprovincedao = new BasicDAO<BillProvinceVO>(MiguSqlMapClient, "BillProvince");
 		billhaoduandao = new BasicDAO<BillHaoduanVO>(MiguSqlMapClient, "BillHaoduan");
 		billlocationdao = new BasicDAO<BillLocationVO>(MiguSqlMapClient, "BillLocation");
+		billgoodsdao = new BasicDAO<BillGoodsVO>(MiguSqlMapClient, "BillGoods");
 		
 		loadAllBasicData();
 		
@@ -51,6 +54,7 @@ public class BillDataService {
 		loadBillProvince();
 		loadBillHaoduan();
 		loadBillLocation();
+		loadBillGoods();
 	}
 	
 	
@@ -145,6 +149,15 @@ public class BillDataService {
 	public void loadBillLocation()
 	{
 		billlocationdao.loadList();
+	}
+	
+	public void loadBillGoods()
+	{
+		billgoodsdao.loadList();
+	}
+	public BillGoodsVO getBillGoodsByKey(int channelid, String app_id, String fee_code)
+	{
+		return billgoodsdao.getById(channelid + "-" + app_id + "-" + fee_code);
 	}
 	
 	private ScheduledExecutorService es = Executors.newScheduledThreadPool(1);

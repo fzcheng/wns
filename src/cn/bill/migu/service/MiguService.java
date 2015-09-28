@@ -176,7 +176,7 @@ public class MiguService {
 				billdataservice.updateMiguCode(migucode);
 			}
 			MiguRecordVO migurecord = new MiguRecordVO();
-			migurecord.setChannelid(miguchannel.getChannelid());
+			migurecord.setChannelid(miguchannel.getChannel_id());
 			switch(migucode.getType())
 			{
 				case MiguCodeVO.TYPE_MIGU:

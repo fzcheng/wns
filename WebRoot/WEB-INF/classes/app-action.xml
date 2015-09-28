@@ -24,9 +24,18 @@
 		<property name="dataservice" ref="dataservice" />
 	</bean>
 	
-	
-	
 	<bean name="/code" class="cn.bill.migu.action.MiguAction">
 		<property name="miguservice" ref="miguservice" />
+	</bean>
+	
+	<!-- 小鸟电信支付接口 -->
+	<bean name="/birdpay" class="cn.bill.bestpay.action.BestpayAction">
+		<property name="bestpay_sdk_service" ref="bestpay_sdk_service" />
+		<property name="bestpay_api_service" ref="bestpay_api_service" />
+	</bean>
+	
+	<!-- 小鸟支付sdk接口 -->
+	<bean name="/mbpay" class="cn.mbpaysdk.action.MbpaySdkAction">
+		<property name="mbpaysdkservice" ref="mbpaysdkservice" />
 	</bean>
 </beans>

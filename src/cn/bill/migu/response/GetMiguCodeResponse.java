@@ -11,7 +11,6 @@ import cn.game.util.JacksonUtil;
 import cn.game.vo.record.RecordVO;
 
 /**
- * 登陆检查响应
  * 
  * @author fzcheng
  */

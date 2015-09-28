@@ -14,10 +14,13 @@
 	<sqlMap resource="cn/bill/base/xml/BillLocation.xml" />
 	<sqlMap resource="cn/bill/base/xml/BillBlock.xml" />
 	<sqlMap resource="cn/bill/base/xml/BillPhone.xml" />
+	<sqlMap resource="cn/bill/base/xml/BillGoods.xml" />
 	
 	<sqlMap resource="cn/bill/migu/xml/basic/MiguCode.xml" />
 	
 	<sqlMap resource="cn/bill/migu/xml/MiguTransferMission.xml" />
 	<sqlMap resource="cn/bill/migu/xml/MiguRecord.xml" />
+	
+	<sqlMap resource="cn/bill/bestpay/v_api/xml/BestpayRecord.xml" />
 	
 </sqlMapConfig>

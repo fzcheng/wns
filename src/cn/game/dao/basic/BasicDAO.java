@@ -20,7 +20,8 @@ public class BasicDAO<T extends BasicVO> extends SqlMapClientDaoSupport {
 	public LinkedHashMap<String, T> map = new LinkedHashMap<String, T>();
 	String xmlname;
 	int dataLoadTime;
-
+	public LinkedHashMap<String, List<T>> groupMap = new LinkedHashMap<String, List<T>>();
+	
 	public BasicDAO() {
 	}
 
@@ -75,6 +76,40 @@ public class BasicDAO<T extends BasicVO> extends SqlMapClientDaoSupport {
 		}
 		List<T> list = new ArrayList<T>(map.values());
 		return list;
+	}
+	
+	/**
+	 * 分组
+	 */
+	public void groupList()
+	{
+		if (map == null || map.size() <= 0) {
+			this.loadList();
+		}
+		groupMap.clear();
+		
+		List<T> list = new ArrayList<T>(map.values());
+		
+		for(T t:list)
+		{
+			List<T> gt = groupMap.get(t.getGroupKey());
+			if(gt == null)
+			{
+				gt = new ArrayList<T>();
+			}
+			
+			if(!gt.contains(t))
+			{
+				gt.add(t);
+			}
+			
+			groupMap.put(t.getGroupKey(), gt);
+		}
+	}
+	
+	public List<T> getGroupList(String key)
+	{
+		return groupMap.get(key);
 	}
 
 	private ScheduledExecutorService es = Executors.newScheduledThreadPool(1);

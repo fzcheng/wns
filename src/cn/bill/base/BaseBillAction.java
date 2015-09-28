@@ -101,13 +101,15 @@ public class BaseBillAction extends DispatchAction {
 			
 			String value = request.getParameter(key);
 			
-			System.out.println(""+key+"|"+value);
-			signData.append(value);
+			//System.out.println(""+key+"="+value+"&");
+			signData.append(""+key+"="+value+"&");
 		}
 		
-		signData.append("appkey");
+		signData.append("key="+channel.getChannelkey());
+		System.out.println("signdata:"+signData.toString());
 		//sha1
-		String signature = HashHex.HashToSHA1(signData.toString());
+		//String signature = HashHex.HashToSHA1(signData.toString());
+		String signature = HashHex.HashToMD5Hex(signData.toString());
 		if(signature.toLowerCase().equals(sign.toLowerCase()))
 		{
 			System.out.println("sign match");

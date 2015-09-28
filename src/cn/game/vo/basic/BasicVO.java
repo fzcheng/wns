@@ -8,5 +8,10 @@ public abstract class BasicVO
 	@JsonIgnore
 	public abstract String getKey();
 	
+	@JsonIgnore
+	public String getGroupKey()
+	{
+		return getKey();
+	}
 	//public abstract String getXmlData() ;
 }

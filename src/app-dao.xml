@@ -35,9 +35,24 @@
 	<bean name="billblockdao" class="cn.bill.base.dao.BillBlockDAO" parent="billbasedao">
 	</bean>
 	
+	<!-- migu -->
 	<bean name="migurecorddao" class="cn.bill.migu.dao.MiguRecordDAO" parent="billbasedao">
 	</bean>
 	<bean name="migutransfermissiondao" class="cn.bill.migu.dao.MiguTransferMissionDAO" parent="billbasedao">
 	</bean>
 	
+	<!-- bestpay -->
+	<bean name="bestpayrecorddao" class="cn.bill.bestpay.v_api.dao.BestpayRecordDAO" parent="billbasedao">
+	</bean>
+	
+	<!-- mbirdpaysdk -->
+	<bean name="mbirdpaysdk_basedao" class="cn.game.dao.base.BaseDao">
+		<property name="sqlMapClient" ref="MbirdtechSqlMapClient" />
+	</bean>
+	
+	<bean name="mbpaysdkpayrecorddao" class="cn.mbpaysdk.dao.PayrecordDAO" parent="mbirdpaysdk_basedao">
+	</bean>
+	
+	<bean name="mbpaysdkphonedao" class="cn.mbpaysdk.dao.PhoneDAO" parent="mbirdpaysdk_basedao">
+	</bean>
 </beans>

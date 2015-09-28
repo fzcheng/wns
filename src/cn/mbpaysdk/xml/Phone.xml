@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Phone">
+
+	<typeAlias alias="phone" type="cn.mbpaysdk.vo.PhoneVO" />
+	
+	<parameterMap class="phone" id="pm_phone_without_id">
+		<parameter property="imsi" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="imei" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="sign" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="dpi" javaType="int" jdbcType="INT" />
+		<parameter property="height" javaType="int" jdbcType="INT" />
+		<parameter property="width" javaType="int" jdbcType="INT" />
+		<parameter property="nettype" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="product" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="app_id" javaType="int" jdbcType="INT" />
+		<parameter property="package_name" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="version_name" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="version_code" javaType="int" jdbcType="INT" />
+		<parameter property="create_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="modify_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="sdkVersion" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="channelId" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="mobileType" javaType="int" jdbcType="INT" />
+		<parameter property="province" javaType="int" jdbcType="INT" />
+		<parameter property="location" javaType="int" jdbcType="INT" />
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_phone_without_id">
+		<![CDATA[
+			INSERT INTO mbpaysdk_phone (imsi,imei,sign,dpi,height,width,nettype,product,app_id,package_name,version_name,version_code,create_time,modify_time,sdkVersion,channelId,mobileType,province,location) 
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<select id="getByKey" parameterClass="phone" resultClass="phone">
+		select * from  mbpaysdk_phone where imsi = #imsi:VARCHAR# and app_id = #app_id:int# 
+	</select>
+	
+	<update id="update" parameterClass="phone">
+		<![CDATA[
+			UPDATE mbpaysdk_phone
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="imei" prepend=",">
+				<![CDATA[
+					imei = #imei:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="sign" prepend=",">
+				<![CDATA[
+					sign = #sign:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="dpi" prepend=",">
+				<![CDATA[
+					dpi = #dpi:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="height" prepend=",">
+				<![CDATA[
+					height = #height:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="width" prepend=",">
+				<![CDATA[
+					width = #width:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="nettype" prepend=",">
+				<![CDATA[
+					nettype = #nettype:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="product" prepend=",">
+				<![CDATA[
+					product = #product:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="package_name" prepend=",">
+				<![CDATA[
+					package_name = #package_name:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="version_name" prepend=",">
+				<![CDATA[
+					version_name = #version_name:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="version_code" prepend=",">
+				<![CDATA[
+					version_code = #version_code:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="modify_time" prepend=",">
+				<![CDATA[
+					modify_time = #modify_time:DATETIME#
+				]]>
+			</isNotNull>
+			<isNotNull property="sdkVersion" prepend=",">
+				<![CDATA[
+					sdkVersion = #sdkVersion:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="channelId" prepend=",">
+				<![CDATA[
+					channelId = #channelId:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<isNotNull property="imsi" prepend="">
+				<![CDATA[
+					imsi = #imsi:VARCHAR# and app_id = #app_id:int# 
+				]]>
+			</isNotNull>
+		</dynamic>
+	</update>
+	
+</sqlMap>
