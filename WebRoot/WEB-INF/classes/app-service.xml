@@ -48,6 +48,7 @@
 	<!-- bestpay api -->
 	<bean id="bestpayrecordservice"  class="cn.bill.bestpay.v_api.service.BestpayRecordService">
 		<property name="bestpayrecorddao" ref="bestpayrecorddao" />
+		<property name="bestpayorirecorddao" ref="bestpayorirecorddao" />
 	</bean>
 	
 	<bean id="bestpay_api_service"  class="cn.bill.bestpay.v_api.service.BestpayService" init-method="init" scope="singleton">
@@ -80,6 +81,13 @@
 
 	<bean id="mbpaysdkdataservice" class="cn.mbpaysdk.service.DataService"
 		lazy-init="false" scope="singleton" init-method="init">
-
 	</bean> 
+	
+	<!-- master -->
+	<bean id="masterservice"  class="cn.master.service.MasterService">
+		<property name="recorddao" ref="master_recorddao" />
+		<property name="loginlogdao" ref="master_loginlogdao" />
+		<property name="uploadrecordlogdao" ref="master_uploadrecordlogdao" />
+		<property name="usereventlogdao" ref="master_usereventlogdao" />
+	</bean>
 </beans>

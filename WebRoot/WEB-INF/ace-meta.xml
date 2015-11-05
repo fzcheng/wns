@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <ace-web-app>
+    <url-rewrite>
+        <rule>
+        <path>/wns/([^/]+)</path>
+        <rewrite flags="P">/$1</rewrite>
+        </rule>
+
+    </url-rewrite>
+    </ace-web-app>

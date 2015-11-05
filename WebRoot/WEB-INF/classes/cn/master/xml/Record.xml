@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Record">
+
+	<typeAlias alias="record" type="cn.master.vo.RecordVO" />
+	
+	<parameterMap class="record" id="pm_record_without_id">
+		<parameter property="UID" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="create_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="last_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="version" javaType="int" jdbcType="INT" />
+		<parameter property="record_data" javaType="[B" jdbcType="BINARY" />
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_record_without_id">
+		<![CDATA[
+			INSERT INTO record (UID,create_time,last_time,version,record_data) 
+			VALUES (?,?,?,?,?);
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<select id="getById" parameterClass="record" resultClass="record">
+		select * from  record where id = #id:INT#
+	</select>
+	
+	<select id="getByKey" parameterClass="record" resultClass="record">
+		select * from  record where UID = #UID:VARCHAR#
+	</select>
+	
+	<update id="update" parameterClass="record">
+		<![CDATA[
+			UPDATE record
+		]]>
+		<dynamic prepend="SET">
+			<isNotNull property="last_time" prepend=",">
+				<![CDATA[
+					last_time = #last_time:DATETIME#
+				]]>
+			</isNotNull>
+			<isNotNull property="version" prepend=",">
+				<![CDATA[
+					version = #version:INT#
+				]]>
+			</isNotNull>
+			<isNotNull property="record_data" prepend=",">
+				<![CDATA[
+					record_data = #record_data:BINARY#
+				]]>
+			</isNotNull>
+		</dynamic>
+		<dynamic prepend="WHERE">
+			<isNotNull property="imsi" prepend="">
+				<![CDATA[
+					UID = #UID:VARCHAR#
+				]]>
+			</isNotNull>
+		</dynamic>
+	</update>
+	
+</sqlMap>

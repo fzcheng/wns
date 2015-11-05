@@ -45,6 +45,9 @@
 	<bean name="bestpayrecorddao" class="cn.bill.bestpay.v_api.dao.BestpayRecordDAO" parent="billbasedao">
 	</bean>
 	
+	<bean name="bestpayorirecorddao" class="cn.bill.bestpay.v_api.dao.BestpayOriRecordDAO" parent="billbasedao">
+	</bean>
+	
 	<!-- mbirdpaysdk -->
 	<bean name="mbirdpaysdk_basedao" class="cn.game.dao.base.BaseDao">
 		<property name="sqlMapClient" ref="MbirdtechSqlMapClient" />
@@ -54,5 +57,22 @@
 	</bean>
 	
 	<bean name="mbpaysdkphonedao" class="cn.mbpaysdk.dao.PhoneDAO" parent="mbirdpaysdk_basedao">
+	</bean>
+	
+	<!-- master -->
+	<bean name="master_basedao" class="cn.game.dao.base.BaseDao">
+		<property name="sqlMapClient" ref="MasterSqlMapClient" />
+	</bean>
+	
+	<bean name="master_loginlogdao" class="cn.master.dao.LoginLogDAO" parent="master_basedao">
+	</bean>
+	
+	<bean name="master_recorddao" class="cn.master.dao.RecordDAO" parent="master_basedao">
+	</bean>
+	
+	<bean name="master_uploadrecordlogdao" class="cn.master.dao.UploadRecordLogDAO" parent="master_basedao">
+	</bean>
+	
+	<bean name="master_usereventlogdao" class="cn.master.dao.UserEventLogDAO" parent="master_basedao">
 	</bean>
 </beans>

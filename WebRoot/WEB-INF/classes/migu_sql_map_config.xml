@@ -22,5 +22,6 @@
 	<sqlMap resource="cn/bill/migu/xml/MiguRecord.xml" />
 	
 	<sqlMap resource="cn/bill/bestpay/v_api/xml/BestpayRecord.xml" />
+	<sqlMap resource="cn/bill/bestpay/v_api/xml/BestpayOriRecord.xml" />
 	
 </sqlMapConfig>

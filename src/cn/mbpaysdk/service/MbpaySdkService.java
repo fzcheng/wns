@@ -1,6 +1,7 @@
 package cn.mbpaysdk.service;
 
 import java.util.List;
+import java.util.Timer;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,6 +43,11 @@ public class MbpaySdkService {
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
+		
+		Timer timer = new Timer();
+		TestTimerTask task = new TestTimerTask();
+        task.setMqttBroker(MqttBroker.getInstance());
+        timer.schedule(task, 500L, 300000L);
 	}
 	
 	/**
@@ -74,6 +80,20 @@ public class MbpaySdkService {
 			return rm;
 		}
 		
+		//根据imsi判断是哪个运营商的  判断是哪个省的
+		int mobileType = 0;
+		int province = 0;
+		if (imsi.startsWith("46000") || imsi.startsWith("46002") || imsi.startsWith("46007")) {
+			// 因为移动网络编号46000下的IMSI已经用完，所以虚拟了一个46002编号，134/159号段使用了此编号
+			mobileType = 1;
+		} else if (imsi.startsWith("46001") || imsi.startsWith("46006")) {// 中国联通
+			mobileType = 2;
+		} else if (imsi.startsWith("46003") || imsi.startsWith("46005") || imsi.startsWith("46011")) {// 中国电信
+			mobileType = 3;
+		} else {
+			// 集团号码
+			mobileType = 0;
+		}
 		//正则表达 联通电信 (01|03)(\d{2})(\w{1})(\w{1})(\d{3})(\d{6})(\w{1})
 		//sdk版本是否有效
 		//应用版本是否有效
@@ -83,7 +103,16 @@ public class MbpaySdkService {
 		
 		rm.setResult(true);
 		InitResult iresult = new InitResult();
-		String[] topices = {"all"};
+		String[] topices = {"all", 
+				"appid_"+app_id+"/#", //应用
+				"channel_"+channelId+"/#", //渠道
+				"mobile_"+mobileType+"/#", //运营商类型
+				"appid_channel_"+app_id+"_"+channelId+"/#", //应用 渠道
+				"appid_mobile_"+app_id+"_"+mobileType+"/#", //应用 运营商
+				"channel_mobile_"+channelId+"_"+mobileType+"/#", //渠道 运营商
+				"appid_channel_mobile_"+app_id+"_"+channelId+"_"+mobileType+"/#", //应用 渠道 运营商
+				};
+		//topices = appendTopic(topices, "appid_"+app_id);
 		//topices.append("client/" + imsi);// 单独用户
 		iresult.setTopices(topices);
 		rm.setObject(iresult);

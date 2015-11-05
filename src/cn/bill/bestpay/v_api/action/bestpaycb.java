@@ -32,6 +32,7 @@ public class bestpaycb extends javax.servlet.http.HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		//doGet(req, resp);
+		System.out.println();
 		System.out.println("bestpaycb doPost");
 		
 		String ORDERSEQ = req.getParameter("ORDERSEQ");
@@ -42,26 +43,26 @@ public class bestpaycb extends javax.servlet.http.HttpServlet {
 		String RETNCODE = req.getParameter("RETNCODE");
 		String RETNINFO = req.getParameter("RETNINFO");
 		
-		BestpayRecordService bestpayrecordservice = (BestpayRecordService)SpringUtils.getBean("bestpayrecordservice");
-		BestpayRecordVO bestpayrecord = bestpayrecordservice.getRecordByTid(ORDERSEQ);
-		if(bestpayrecord == null)
-			return;
-		
-		System.out.println("bestpayrecord:"+bestpayrecord.toString());
-		bestpayrecord.setChannel_order_id(UPTRANSEQ);
-		if(RETNCODE != null && RETNCODE.equals("0000"))
-		{
-			bestpayrecord.setStatus(BestpayRecordVO.STATUS_SUCC);
-			bestpayrecord.setResultcode(RETNCODE);
-		}
-		else
-		{
-			bestpayrecord.setStatus(BestpayRecordVO.STATUS_FAIL);
-			bestpayrecord.setResultcode(RETNCODE);
-		}
-		
-		bestpayrecord.setModify_time(DateUtil.getCurrentTimeStrs());
-		bestpayrecordservice.update(bestpayrecord);
+//		BestpayRecordService bestpayrecordservice = (BestpayRecordService)SpringUtils.getBean("bestpayrecordservice");
+//		BestpayRecordVO bestpayrecord = bestpayrecordservice.getRecordByTid(ORDERSEQ);
+//		if(bestpayrecord == null)
+//			return;
+//		
+//		System.out.println("bestpayrecord:"+bestpayrecord.toString());
+//		bestpayrecord.setChannel_order_id(UPTRANSEQ);
+//		if(RETNCODE != null && RETNCODE.equals("0000"))
+//		{
+//			bestpayrecord.setStatus(BestpayRecordVO.STATUS_SUCC);
+//			bestpayrecord.setResultcode(RETNCODE);
+//		}
+//		else
+//		{
+//			bestpayrecord.setStatus(BestpayRecordVO.STATUS_FAIL);
+//			bestpayrecord.setResultcode(RETNCODE);
+//		}
+//		
+//		bestpayrecord.setModify_time(DateUtil.getCurrentTimeStrs());
+//		bestpayrecordservice.update(bestpayrecord);
 		
 		System.out.println("ORDERSEQ:"+ORDERSEQ);
 		System.out.println("ORDERREQTRANSEQ:"+ORDERREQTRANSEQ);
@@ -71,54 +72,54 @@ public class bestpaycb extends javax.servlet.http.HttpServlet {
 		System.out.println("RETNCODE:"+RETNCODE);
 		System.out.println("RETNINFO:"+RETNINFO);
 		
-		System.out.println("bestpayrecord:"+bestpayrecord.toString());
+		System.out.println("UPTRANSEQ_"+UPTRANSEQ);
 		
 		writeDataResponse("UPTRANSEQ_"+UPTRANSEQ, resp);
 		
 		//通知下游
-		System.out.println("url:"+bestpayrecord.getTransfer_url());
-		if(bestpayrecord.getTransfer_url() != null && !bestpayrecord.getTransfer_url().equals(""))
-		{
-			Map<String, String> m = new HashMap<String, String>();
-			m.put("orderid", bestpayrecord.getOrderid());
-			m.put("phone", bestpayrecord.getPhone());
-			m.put("price", ""+bestpayrecord.getPrice());
-			
-			BillDataService billdataservice = (BillDataService)SpringUtils.getBean("billdataservice");
-			BillChannelVO vo = billdataservice.getBillChannelById(""+bestpayrecord.getCp_channel_id());
-			
-			if(vo != null)
-			{
-				String signData = "orderid="+bestpayrecord.getOrderid()+"&phone="+bestpayrecord.getPhone()+"&price="+bestpayrecord.getPrice()+"&key="+vo.getChannelkey();
-				String sign = HashHex.HashToMD5Hex(signData);
-				
-				m.put("sign", ""+sign);
-				if(bestpayrecord.getStatus() == BestpayRecordVO.STATUS_SUCC)
-					m.put("status", "0");
-				else
-					m.put("status", "-1");
-				
-				//发送请求
-				try {
-					String result = HttpUtils.URLPost(bestpayrecord.getTransfer_url(), m);
-					System.out.println("result:"+result);
-	
-					if(result != null && result.equals("200"))
-					{
-						bestpayrecord.setTransfer_status(1);
-						bestpayrecordservice.update(bestpayrecord);
-					}
-					else
-					{
-						bestpayrecord.setTransfer_status(2);
-						bestpayrecordservice.update(bestpayrecord);
-					}
-				} catch (IOException e) {
-					bestpayrecord.setTransfer_status(3);
-					bestpayrecordservice.update(bestpayrecord);
-				}
-			}
-		}
+//		System.out.println("url:"+bestpayrecord.getTransfer_url());
+//		if(bestpayrecord.getTransfer_url() != null && !bestpayrecord.getTransfer_url().equals(""))
+//		{
+//			Map<String, String> m = new HashMap<String, String>();
+//			m.put("orderid", bestpayrecord.getOrderid());
+//			m.put("phone", bestpayrecord.getPhone());
+//			m.put("price", ""+bestpayrecord.getPrice());
+//			
+//			BillDataService billdataservice = (BillDataService)SpringUtils.getBean("billdataservice");
+//			BillChannelVO vo = billdataservice.getBillChannelById(""+bestpayrecord.getCp_channel_id());
+//			
+//			if(vo != null)
+//			{
+//				String signData = "orderid="+bestpayrecord.getOrderid()+"&phone="+bestpayrecord.getPhone()+"&price="+bestpayrecord.getPrice()+"&key="+vo.getChannelkey();
+//				String sign = HashHex.HashToMD5Hex(signData);
+//				
+//				m.put("sign", ""+sign);
+//				if(bestpayrecord.getStatus() == BestpayRecordVO.STATUS_SUCC)
+//					m.put("status", "0");
+//				else
+//					m.put("status", "-1");
+//				
+//				//发送请求
+//				try {
+//					String result = HttpUtils.URLPost(bestpayrecord.getTransfer_url(), m);
+//					System.out.println("result:"+result);
+//	
+//					if(result != null && result.equals("200"))
+//					{
+//						bestpayrecord.setTransfer_status(1);
+//						bestpayrecordservice.update(bestpayrecord);
+//					}
+//					else
+//					{
+//						bestpayrecord.setTransfer_status(2);
+//						bestpayrecordservice.update(bestpayrecord);
+//					}
+//				} catch (IOException e) {
+//					bestpayrecord.setTransfer_status(3);
+//					bestpayrecordservice.update(bestpayrecord);
+//				}
+//			}
+//		}
 	}
 
 	public void writeDataResponse(String data, HttpServletResponse response)

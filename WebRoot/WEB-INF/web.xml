@@ -178,6 +178,17 @@
 		<servlet-name>bestpaycb_api</servlet-name>
 		<url-pattern>/bestpaycb_api.do</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>bestpaycb_inter</servlet-name>
+		<servlet-class>
+			cn.bill.bestpay.v_api.action.bestpaycb_inter</servlet-class>
+	</servlet>
+	  
+	<servlet-mapping>
+		<servlet-name>bestpaycb_inter</servlet-name>
+		<url-pattern>/bestpaycb_inter.do</url-pattern>
+	</servlet-mapping>
 	<!-- bestpaycb v_api end -->
 	
 	<!-- bestpaycb v_sdk begin -->
@@ -205,6 +216,10 @@
 		<url-pattern>/bestverify.do</url-pattern>
 	</servlet-mapping>
 	<!-- bestpaycb v_sdk end -->
+	
+	<!-- master begin -->
+	
+	<!-- master end -->
 	
   	<!-- 字符过滤类 编码方式为UTF-8 -->
 	<filter>

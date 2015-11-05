@@ -1,16 +1,24 @@
 package cn.bill.bestpay.v_api.service;
 
+import cn.bill.bestpay.v_api.dao.BestpayOriRecordDAO;
 import cn.bill.bestpay.v_api.dao.BestpayRecordDAO;
+import cn.bill.bestpay.v_api.vo.BestpayOriRecordVO;
 import cn.bill.bestpay.v_api.vo.BestpayRecordVO;
 import cn.org.util.DateUtil;
 
 public class BestpayRecordService {
 
 	BestpayRecordDAO bestpayrecorddao;
+	BestpayOriRecordDAO bestpayorirecorddao;
 	
 	public void setBestpayrecorddao(BestpayRecordDAO bestpayrecorddao)
 	{
 		this.bestpayrecorddao = bestpayrecorddao;
+	}
+	
+	public void setBestpayorirecorddao(BestpayOriRecordDAO bestpayorirecorddao)
+	{
+		this.bestpayorirecorddao = bestpayorirecorddao;
 	}
 	
 	/**
@@ -93,5 +101,43 @@ public class BestpayRecordService {
 	public BestpayRecordVO getRecordBySMSID(String smsid) {
 		BestpayRecordVO vo = bestpayrecorddao.getBySMSID(smsid);
 		return vo;
+	}
+	
+	
+	//////ori record/////////////////////////////////////////////////////////
+	public void updateOri(BestpayOriRecordVO record) {
+		record.setModify_time(DateUtil.getCurrentTimeStrs());
+		
+		bestpayorirecorddao.update(record);
+	}
+	
+	public BestpayOriRecordVO getRecordOriByOrderNo(String orderNo)
+	{
+		BestpayOriRecordVO v = bestpayorirecorddao.getByOrderNo(orderNo);
+		if(v != null)
+			return v;
+		
+		return null;
+	}
+	
+	public BestpayOriRecordVO createRecordOri(String orderNo, String goodsCode, String phoneNum, int orderAmount, String attach)
+	{
+		BestpayOriRecordVO v = getRecordOriByOrderNo(orderNo);
+		if(v != null)
+			return null;
+			
+		BestpayOriRecordVO record = new BestpayOriRecordVO();
+		record.setOrderNo(orderNo);
+		record.setGoodsCode(goodsCode);
+		record.setPhoneNum(phoneNum);
+		record.setOrderAmount(orderAmount);
+		record.setAttach(attach);
+		record.setCreate_time(DateUtil.getCurrentTimeStrs());
+		record.setModify_time(DateUtil.getCurrentTimeStrs());
+		
+		System.out.println(record.toString());
+		record.setId(bestpayorirecorddao.save(record));
+		
+		return record;
 	}
 }

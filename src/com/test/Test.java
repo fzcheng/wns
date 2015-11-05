@@ -130,12 +130,15 @@ public class Test {
 		
 		//String signData = "app_id=246917aeab8411e4b345c6a10b512583&app_orderid=20150630104137391617&ch_type=37&is_monthly=0&merc_id=2000029&merc_key=5598531e2dbc664be50d88fc56e4a840&orderid=20150630104137391617&pay_amount=200&pay_time=20150630104202&phone=13818365949&rec_amount=200&status=1&time=1435632122&userid=14679060";
 		
-		String signData = "app_id=101&channelid=1000&comd=getmsg&extra=2015081000000203&fee_code=101001&orderid=2015081000000203&url=http://114.113.159.171:8088/statsynd/interface/zhangmu/ctcc.jsp&key=d4df4f41b8924964b8785ea35e117d6d";
-		String sign = "3263845f0db5fdf926eb2d0da9406566";
+		String signData = "FirstTeste759385a9e3d42b18748abd58fa56c06";
+		byte[] b = signData.getBytes("utf-8");
 		String MAC = HashHex.HashToMD5Hex(signData);
+		
+		String MAC2 = HashHex.HashToMD5Hex(signData.getBytes());
 		
 		System.out.println("signData:"+signData);
 		System.out.println("MAC:"+MAC);
+		System.out.println("MAC2:"+MAC2);
 	}
 	
 	public static void testUmpaychannel() throws DocumentException {

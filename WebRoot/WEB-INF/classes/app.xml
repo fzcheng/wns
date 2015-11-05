@@ -4,11 +4,19 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
  
+ <bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <!-- <value>classpath:wns_online.properties</value> -->
+            <value>classpath:wns.properties</value>
+        </property>
+    </bean>
+    
  	<bean id="wnsDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://127.0.0.1:3306/wns?useUnicode=true&amp;characterEncoding=UTF-8" />
-		<property name="username" value="root" />
-		<property name="password" value="tong0901" />
+		<property name="url" value="${wns.url}" />
+		<property name="username" value="${wns.username}" />
+		<property name="password" value="${wns.password}" />
 		<property name="initialSize" value="5" />
 		<property name="maxIdle" value="5" />
 		<property name="minIdle" value="5" />
@@ -65,9 +73,9 @@ http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 	<!-- migu igop -->
 	<bean id="miguDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://127.0.0.1:3306/migu_igop?useUnicode=true&amp;characterEncoding=UTF-8" />
-		<property name="username" value="root" />
-		<property name="password" value="tong0901" />
+		<property name="url" value="${migu.url}" />
+		<property name="username" value="${migu.username}" />
+		<property name="password" value="${migu.password}" />
 		<property name="initialSize" value="5" />
 		<property name="maxIdle" value="5" />
 		<property name="minIdle" value="5" />
@@ -117,9 +125,9 @@ http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 	<!-- mbirdtech 支付sdk以及后台数据库 -->
 	<bean id="mbirdtechDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://127.0.0.1:3306/youqutech?useUnicode=true&amp;characterEncoding=UTF-8" />
-		<property name="username" value="root" />
-		<property name="password" value="tong0901" />
+		<property name="url" value="${mbirdtech.url}" />
+		<property name="username" value="${mbirdtech.username}" />
+		<property name="password" value="${mbirdtech.password}" />
 		<property name="initialSize" value="5" />
 		<property name="maxIdle" value="5" />
 		<property name="minIdle" value="5" />
@@ -150,6 +158,58 @@ http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager">
 			<ref bean="mbirdtechTransactionManager" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">PROPAGATION_REQUIRED</prop>
+				<prop key="getUserLoginVo">PROPAGATION_REQUIRED</prop>
+				<prop key="count*">PROPAGATION_REQUIRED</prop>
+				<prop key="query*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	
+	<!-- master 支付sdk以及后台数据库 -->
+	<bean id="masterDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="${master.url}" />
+		<property name="username" value="${master.username}" />
+		<property name="password" value="${master.password}" />
+		<property name="initialSize" value="5" />
+		<property name="maxIdle" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxActive" value="5" />
+		<property name="maxWait" value="2000" />
+		<property name="testOnBorrow" value="true" />
+		<property name="validationQuery" value="select 1" />
+		<property name="testWhileIdle" value="true" />
+		<property name="timeBetweenEvictionRunsMillis" value="120000" />
+		<property name="minEvictableIdleTimeMillis" value="5000" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="180" />
+		<property name="logAbandoned" value="true" />
+	</bean>
+	
+	<bean id="MasterSqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="classpath:/master_sql_map_config.xml" />
+		<property name="dataSource" ref="masterDataSource" />
+	</bean>
+	
+	<!-- Transaction manager for a single JDBC DataSource -->
+	<bean id="masterTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="masterDataSource" />
+	</bean>
+
+	<!-- 配置事物 -->
+	<bean id="masterManagerProxy" abstract="true"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="masterTransactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>

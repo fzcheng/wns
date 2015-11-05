@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="LoginLog">
+
+	<typeAlias alias="loginlog" type="cn.master.vo.LoginLogVO" />
+	
+	<parameterMap class="loginlog" id="pm_loginlog_without_id">
+		<parameter property="UID" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="login_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="client_version" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="agenttype" javaType="int" jdbcType="INT" />
+		<parameter property="useragent" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="nettype" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="machine_type" javaType="string" jdbcType="VARCHAR" />
+		
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_loginlog_without_id">
+		<![CDATA[
+			INSERT INTO log_login (UID,login_time,client_version,agenttype,useragent,nettype,machine_type) 
+			VALUES (?,?,?,?,?,?,?);
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<select id="getById" parameterClass="loginlog" resultClass="loginlog">
+		select * from  log_login where id = #id:INT#
+	</select>
+	
+	<select id="getByKey" parameterClass="loginlog" resultClass="loginlog">
+		select * from  log_login where UID = #UID:VARCHAR#
+	</select>
+	
+</sqlMap>

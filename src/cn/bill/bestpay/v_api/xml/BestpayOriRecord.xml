@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BestpayOriRecord">
+
+	<typeAlias alias="bestpayorirecord" type="cn.bill.bestpay.v_api.vo.BestpayOriRecordVO" />
+	<parameterMap class="bestpayorirecord" id="pm_bestpayorirecord_without_id">
+		<parameter property="modify_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="create_time" javaType="string" jdbcType="DATETIME" />
+		<parameter property="orderNo" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="goodsCode" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="phoneNum" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="orderAmount" javaType="int" jdbcType="SMALLINT" />
+		<parameter property="attach" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="ORDERSEQ" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="ORDERREQTRANSEQ" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="UPTRANSEQ" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="TRANDATE" javaType="int" jdbcType="BIGINT" />
+		<parameter property="ORDERAMOUNT2" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="RETNCODE" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="RETNINFO" javaType="string" jdbcType="VARCHAR" />
+	</parameterMap>	
+	
+	<insert id="save" parameterMap="pm_bestpayorirecord_without_id">
+		<![CDATA[
+			INSERT INTO bestpay_ori_record (modify_time,create_time,orderNo,goodsCode,phoneNum,orderAmount,attach,
+			ORDERSEQ,ORDERREQTRANSEQ,UPTRANSEQ,TRANDATE,ORDERAMOUNT2,RETNCODE,RETNINFO) 
+			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+		]]>
+		<selectKey resultClass="int">
+			<![CDATA[
+				SELECT @@IDENTITY AS ID
+			]]>
+		</selectKey>
+	</insert>
+
+	<select id="getByOrderNo" parameterClass="string" resultClass="bestpayorirecord">
+		select * from  bestpay_ori_record where orderNo = #VARCHAR# order by id desc limit 1
+	</select>
+	
+	<select id="getById" parameterClass="bestpayorirecord" resultClass="bestpayorirecord">
+		select * from  bestpay_ori_record where id = #id:INT#
+	</select>
+	
+	<update id="update" parameterClass="bestpayorirecord">
+		<![CDATA[
+			UPDATE bestpay_ori_record
+		]]>
+		<dynamic prepend="SET">
+			
+			
+			<isNotNull property="ORDERSEQ" prepend=",">
+				<![CDATA[
+					ORDERSEQ = #ORDERSEQ:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="ORDERREQTRANSEQ" prepend=",">
+				<![CDATA[
+					ORDERREQTRANSEQ = #ORDERREQTRANSEQ:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="UPTRANSEQ" prepend=",">
+				<![CDATA[
+					UPTRANSEQ = #UPTRANSEQ:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="TRANDATE" prepend=",">
+				<![CDATA[
+					TRANDATE = #TRANDATE:BIGINT#
+				]]>
+			</isNotNull>
+			<isNotNull property="ORDERAMOUNT2" prepend=",">
+				<![CDATA[
+					ORDERAMOUNT2 = #ORDERAMOUNT2:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="RETNCODE" prepend=",">
+				<![CDATA[
+					RETNCODE = #RETNCODE:VARCHAR#
+				]]>
+			</isNotNull>
+			<isNotNull property="RETNINFO" prepend=",">
+				<![CDATA[
+					RETNINFO = #RETNINFO:VARCHAR#
+				]]>
+			</isNotNull>
+			
+			<isNotNull property="modify_time" prepend=",">
+				<![CDATA[
+					modify_time = #modify_time:DATETIME#
+				]]>
+			</isNotNull>
+			
+
+		</dynamic>
+		<dynamic prepend="WHERE">
+			id = #id:INT#
+		</dynamic>
+	</update>
+</sqlMap>

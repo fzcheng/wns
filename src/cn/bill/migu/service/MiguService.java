@@ -59,8 +59,7 @@ public class MiguService {
 	
 	public void init()
 	{
-		es.scheduleWithFixedDelay(new DealMissionRunnable(), 30,
-				30, TimeUnit.SECONDS);
+		//es.scheduleWithFixedDelay(new DealMissionRunnable(), 30, 30, TimeUnit.SECONDS);
 	}
 	
 	public ReturnMessage requestGetCode(HttpServletRequest request) {

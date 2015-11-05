@@ -33,6 +33,9 @@
 		<action parameter="comd" path="/mbpay" type="org.springframework.web.struts.DelegatingActionProxy">	
 		</action>
 		
+		<action parameter="comd" path="/master" type="org.springframework.web.struts.DelegatingActionProxy">	
+		</action>
+		
 	</action-mappings>
 	<message-resources parameter="resources.config.index"></message-resources>
 </struts-config>

@@ -38,4 +38,9 @@
 	<bean name="/mbpay" class="cn.mbpaysdk.action.MbpaySdkAction">
 		<property name="mbpaysdkservice" ref="mbpaysdkservice" />
 	</bean>
+	
+	<!-- 师父 -->
+	<bean name="/master" class="cn.master.action.MasterAction">
+		<property name="masterservice" ref="masterservice" />
+	</bean>
 </beans>
